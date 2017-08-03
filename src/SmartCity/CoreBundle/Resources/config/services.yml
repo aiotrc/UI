@@ -1,0 +1,65 @@
+services:
+    ## Symfony Exception Listener For Custom Errors
+    kernel.listener.exception_listener:
+        class: SmartCity\CoreBundle\EventListener\ExceptionListener
+        arguments: ['@service_container']
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    ## Symfony OnKernelRequestHandler For Custom Behaviors on Kernel Requests
+    kernel.listener.on_request:
+        class: SmartCity\CoreBundle\EventListener\OnKernelRequestHandler
+        arguments: ['@service_container']
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    ## SmartCity Encoder Service
+    SmartCity.security.legacy_encoder:
+            class: SmartCity\CoreBundle\Security\Encoder\LegacySmartCityEncoder
+
+    ## SmartCity Locale Listener
+    SmartCity.locale_listener:
+        class: SmartCity\CoreBundle\EventListener\LocaleListener
+        arguments: ["%kernel.default_locale%"]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ## SmartCity User Locale Listener
+    SmartCity.user_locale_listener:
+        class: SmartCity\CoreBundle\EventListener\UserLocaleListener
+        arguments: ["@session"]
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
+
+    ## SmartCity Actions Loader
+    SmartCity.command.actions_loader:
+        class: SmartCity\CoreBundle\Console\Command\ActionLoaderCommand
+        tags:
+            - { name: console.command }
+
+    ## SmartCity Array Translator
+    SmartCity.array_translator:
+        class: SmartCity\CoreBundle\Services\ArrayTranslator
+        arguments: [ '@service_container' ]
+
+    ## SmartCity User Activity Monitor
+    user_activity_monitor_listener:
+        class: SmartCity\CoreBundle\Services\UserMonitor
+        arguments: [ '@security.token_storage', '@service_container' ]
+        tags:
+          - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+     ## SmartCity Array Translator
+    SmartCity.captcha_service:
+        class: SmartCity\CoreBundle\Services\CaptchaService
+        arguments: [ '@service_container' ]
+        
+    SmartCity.phone.service:
+        class: SmartCity\CoreBundle\Services\PhoneService
+        arguments: ['@service_container']
+
+
+    SmartCity.auth_service:
+        class: SmartCity\CoreBundle\Services\AuthService
+        arguments: [ @service_container ]

@@ -1,0 +1,70 @@
+services:
+    
+    # datatables
+    SmartCity.user.datatable:
+         class: SmartCity\UserBundle\Datatables\UserDatatable
+         parent: sg_datatables.datatable.abstract
+         tags:
+            - { name: 'sg.datatable.view' }
+
+    SmartCity.role.datatable:
+         class: SmartCity\UserBundle\Datatables\RoleDatatable
+         parent: sg_datatables.datatable.abstract
+         tags:
+            - { name: 'sg.datatable.view' }
+
+    SmartCity.actionGroup.datatable:
+        class: SmartCity\UserBundle\Datatables\ActionGroupDatatable
+        parent: sg_datatables.datatable.abstract
+        tags:
+            - { name: 'sg.datatable.view' }
+
+    # services
+    security.access.action_voter:
+        class: SmartCity\UserBundle\Security\Authorization\Voter\ActionVoter
+        arguments: [ '@doctrine.orm.entity_manager' ]
+        public: false
+        tags:
+            - { name: security.voter }
+    
+    SmartCity.user.service:
+         class: SmartCity\UserBundle\Services\UserService
+         arguments: [ '@service_container' ]
+
+    SmartCity.user.verification:
+         class: SmartCity\UserBundle\Services\UserVerificationService
+         arguments: [ '@service_container' ]
+
+
+    SmartCity.user.operation:
+         class: SmartCity\UserBundle\Services\UserOperationService
+         arguments: [ '@service_container' ]
+
+    # commands
+    SmartCity.command.user.expire_verification:
+        class: SmartCity\UserBundle\Console\Command\ExpireVerificationToken
+        tags:
+            - { name: console.command }
+
+    # listeners
+    kernel.listener.auto_authorization_listener:
+        class: SmartCity\UserBundle\EventListener\AutoAuthorizationListener
+        arguments: [ '@security.authorization_checker' , '@security.token_storage' , '@annotations.reader' ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+    container.listener.user:
+         class: SmartCity\UserBundle\Entity\Lifecycle\UserListener
+         arguments: [ '@service_container' ]
+         tags:
+            - { name: doctrine.orm.entity_listener }
+
+
+    SmartCity.user.form:
+        class: SmartCity\UserBundle\Form\Type\UserType
+        arguments: ["@security.authorization_checker"]
+        tags:
+            - { name: form.type }
+
+
+

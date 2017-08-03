@@ -1,0 +1,8 @@
+services:
+    
+    # datatables
+    SmartCity.course.datatable:
+         class: SmartCity\CourseBundle\Datatables\CourseDatatable
+         parent: sg_datatables.datatable.abstract
+         tags:
+            - { name: 'sg.datatable.view' }

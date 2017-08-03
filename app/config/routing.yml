@@ -1,0 +1,21 @@
+panel_route:
+    resource: "@SmartCityPanelBundle/Resources/config/routing.yml"
+    host:     %domain%
+    prefix:   /
+
+gregwar_captcha_routing:
+    resource: "@GregwarCaptchaBundle/Resources/config/routing/routing.yml"
+    prefix: /_captcha
+
+_bazinga_jstranslation:
+    resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+datatable:
+    resource: "@SgDatatablesBundle/Controller/"
+    type:     annotation

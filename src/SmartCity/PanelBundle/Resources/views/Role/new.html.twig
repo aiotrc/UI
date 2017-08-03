@@ -1,0 +1,73 @@
+{% extends 'SmartCityPanelBundle:Common:base.html.twig' %}
+{% import 'SmartCityPanelBundle:Common:form.html.twig' as _t %}
+
+{% form_theme form _t %}
+
+{% block title %}
+    {% trans from 'labels' %}label.role.new{% endtrans %}
+{% endblock title %}
+
+
+{% block body -%}
+
+    {{ form_start(form) }}
+    <div class="page-bar">
+        {% set breadcrumbs_items = 
+            [
+                ['label.role.list'|trans([], 'labels'), path('panel_role_index') ],
+                ['label.role.new'|trans([], 'labels'), '#' ]
+            ] 
+        %}
+        {{ toolbox.breadcrumbs(breadcrumbs_items) }}
+
+        <div class="btn-group pull-left">
+            {{ form_widget(form.submit) }}
+        </div>
+    </div>
+
+    {% set basic_data %}
+        {{ form_row(form.title) }}
+        {{ form_row(form.role) }}
+        {{ form_row(form.visible) }}
+    {% endset %}
+
+    {% set actiongroups_data %}
+        <div class="form-group">
+            <div class="col-sm-12">
+                <input type="text" id="filter_input" class="form-control" placeholder="فیلتر">
+            </div>
+        </div>
+        <hr>
+        {{ form_widget(form.actionGroups) }}
+    {% endset %}
+
+    
+    <div class="row">
+        {{ toolbox.portlet('label.basic_data', '', basic_data) }}
+        {{ toolbox.portlet('label.actiongroup.title', '', actiongroups_data) }}
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    {% javascripts
+        'bundles/smartcitypanel/js/ItemFiltering.js'
+
+        filter='?jsqueeze'
+    %}
+        <script src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+
+{% endblock %}
+
+{% block documentReady %}
+
+    ItemFiltering.actionObj = '#Role_actionGroups';
+    ItemFiltering.init();
+    
+{% endblock %}

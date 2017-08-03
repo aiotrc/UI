@@ -1,0 +1,98 @@
+{% extends 'SmartCityPanelBundle:Common:base.html.twig' %}
+{% import 'SmartCityPanelBundle:Common:form.html.twig' as _form %}
+
+{% form_theme form _form %}
+    
+{% block title %}
+    {% trans from 'labels' %}label.user.new{% endtrans %}
+{% endblock title %}
+
+
+{% block body -%}
+    {{ form_start(form) }}
+    <div class="page-bar">
+
+        {% set breadcrumbs_items = 
+            [
+                ['label.user.list'|trans([], 'labels'), path('panel_user_index') ],
+                ['label.user.new'|trans([], 'labels'), '#' ]
+            ] 
+        %}
+        {{ toolbox.breadcrumbs(breadcrumbs_items) }}
+
+        <div class="page-toolbar btn-group">
+            {{ form_widget(form.submit) }}
+        </div>
+    </div>
+
+    {% set personal_data %}
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.lastname) }}
+        {{ form_row(form.birthday) }}
+        {{ form_row(form.nationalCode) }}
+        {{ form_row(form.sex) }}
+        <div class="hidden">
+            {{ form_row(form.jalaliBirthday) }}
+        </div>
+        {# {{ form_row(form.comment) }} #}
+    {% endset %}
+
+    {% set contact_data %}
+        {{ form_row(form.email) }}
+        {{ form_row(form.cellphone) }}
+    {% endset %}
+
+    {% set system_data %}
+        {{ form_row(form.plainPassword) }}
+        {{ form_row(form.status) }} 
+        {{ form_row(form.locale) }} 
+    {% endset %}
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" data-target="#basicData" target="basicData">
+            <i class="fa fa-address-card"></i>
+                {% trans from "labels" %}label.basic_data{% endtrans %}
+            </a>
+        </li>
+        <li>
+            <a data-toggle="tab" data-target="#systemData" target="systemData"><i class="fa fa-lock"></i>
+                {% trans from "labels" %}label.system_data{% endtrans %}
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="basicData" class="tab-pane active">
+            <div class="row">
+                {{ toolbox.portlet('label.personal_data' ,'' , personal_data, 6) }}
+                {{ toolbox.portlet('label.contact_data' ,'' , contact_data, 6, '335px') }}
+            </div>
+        </div>
+
+        <div id="systemData" class="tab-pane">
+            <div class="row">
+                {{ toolbox.portlet('label.account_data', '' , system_data, 6) }}
+            </div>
+        </div>
+    </div>
+    
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    {% javascripts
+        'bundles/smartcitypanel/js/User.js'
+
+        filter='?jsqueeze'
+    %}
+        <script src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+
+{% endblock %}
+
+{% block documentReady %}
+   User.init('new');
+{% endblock %}

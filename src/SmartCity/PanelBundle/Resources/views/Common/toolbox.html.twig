@@ -1,0 +1,86 @@
+{# breadcrumbs #}
+{% macro breadcrumbs(items) %}
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="/">{{ 'label.dashboard'|trans([], 'labels') }}</a>
+            <i class="fa fa-angle-left"></i>
+        </li>
+        {% for item in items %}
+            
+            {# item[0] -> title #}
+            {# item[1] -> link #}
+            {# item[2] -> icon #}
+
+            <li>
+                {% if item[2] is defined %}
+                    <i class="{{item[2]}}"></i>
+                {% endif %}
+
+                <a href="{{ item[1] }}">{{ item[0] }}</a>
+                
+                {% if loop.last == false %}
+                    <i class="fa fa-angle-left"></i>
+                {% endif %}
+
+            </li>
+        {% endfor %}
+
+    </ul>
+{% endmacro %}
+
+
+{# sidebar menu #}
+{% macro menu(title, controller_name, href='javascript:;', icon='fa fa-list', dropdown=true) %}
+    {% set active_controller = app.request.attributes.get('_controller') %}
+    <li {# {% if controller_name in active_controller %}class="active"{% endif %} #}>
+        <a href="{{ href }}" {% if dropdown == true %} class="dropdown-toggle" data-toggle="dropdown" {% endif %}>
+            <i class="{{ icon }}"></i>
+            <span class="title">{{ title|trans([], 'labels') }}</span>
+            {% if dropdown %}
+                <span class="arrow"></span>
+            {% endif %}
+        </a>
+        {% if dropdown == true %}
+            <ul class="sub-menu">
+        {% endif %}
+{% endmacro %}
+
+{% macro end_menu(dropdown=true) %}
+    {% if dropdown == true %}
+        </ul>
+    {% endif %}
+        </li>
+{% endmacro %}
+
+{% macro sub_menu(title, href, icon) %}
+    {% set current_route = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+    <li{% if href == current_route %} class="active"{% endif %}>
+        <a href="{{ href }}">
+            <i class="{{ icon }}"></i>
+            {{ title|trans([], 'labels') }}
+        </a>
+    </li>
+{% endmacro %}
+
+{# portlet #}
+{% macro portlet(title, desc, content, colNum = 6, minHeight = '100px', icon, color, portletClass = '', actions) %}
+    <div class="col-sm-{{colNum}}">
+        <div class="portlet light bg-inverse {{portletClass}}" style="min-height: {{minHeight}}">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="{{ icon }} {{ color }}"></i>
+                    <span class="caption-subject {{ color }} bold uppercase">{{ title|trans([], 'labels') }}</span>
+                </div>
+                <div class="actions">
+                    {{actions}}
+                    <a class="btn btn-circle btn-default fullscreen icon-only" href="javascript:;" data-original-title="" title="تمام صفحه"><i class="icon-cursor-move"></i></a>
+                </div>
+            </div>
+            <br>
+            <div class="portlet-body form">
+                {{content}}
+            </div>
+        </div>
+    </div>
+{% endmacro %}

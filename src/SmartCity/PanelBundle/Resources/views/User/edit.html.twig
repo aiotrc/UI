@@ -1,0 +1,120 @@
+{% extends 'SmartCityPanelBundle:Common:base.html.twig' %}
+{% import 'SmartCityPanelBundle:Common:form.html.twig' as _form %}
+
+{% form_theme edit_form _form %}
+    
+{% block title %}
+    {% trans with {'%name%': user.lastname} from "labels" %}label.user.edit{% endtrans %}
+{% endblock title %}
+
+
+{% block body -%}
+{{ form_start(edit_form) }}
+    <div class="page-bar">
+
+        {% set breadcrumbs_items = 
+            [
+                ['label.user.list'|trans([], 'labels'), path('panel_user_index') ],
+                ['label.user.edit'|trans({'%name%': user.lastname}, "labels"), '' ]
+            ] 
+        %}
+        
+        {{ toolbox.breadcrumbs(breadcrumbs_items) }}
+
+        <div class="btn-group pull-left">
+            {{ form_widget(edit_form.submit) }}
+        </div>
+    </div>
+
+    {% if user.status == 'NOT_VERIFIED' %}
+        <div class="alert alert-warning">
+            <p>اطلاعات کاربری در مرحله تایید است. <br>
+            پس از تایید ، تغییر اطلاعات تنها با هماهنگی واحد و کارشناس مربوطه امکان پذیر خواهد بود.</p>
+        </div>
+    {% endif %}
+    
+    {% set personal_data %}
+        {{ form_row(edit_form.firstname) }}
+        {{ form_row(edit_form.lastname) }}
+        {{ form_row(edit_form.birthday) }}
+        {{ form_row(edit_form.nationalCode) }}
+        {{ form_row(edit_form.sex) }}
+        <div class="hidden">
+            {{ form_row(edit_form.jalaliBirthday) }}
+        </div>
+        {# {{ form_row(edit_form.comment) }} #}
+    {% endset %}
+
+    {% set contact_data %}
+        {{ form_row(edit_form.email) }}
+        {{ form_row(edit_form.cellphone) }}
+    {% endset %}
+
+    {% set password_data %}
+        {{ form_row(edit_form.plainPassword) }}
+    {% endset %}
+
+    {% set account_data %}
+        {{ form_row(edit_form.status) }} 
+        {{ form_row(edit_form.locale) }} 
+        
+        <div class="form-group">
+            <div class="col-sm-4">
+                <span class="hidden user_fullname">{{user.firstname ~ ' ' ~ user.lastname}}</span>
+            </div>
+            <div class="col-sm-8">
+                <a href="{{path('panel_user_role_edit', {'id':user.id})}}" class="role_edit_button btn btn-xs blue"><i class="fa fa-lock"></i> 
+                    {% trans from "labels" %}label.access_managements{% endtrans %}
+                </a>
+            </div>
+        </div> 
+    {% endset %}
+    
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" data-target="#basicData" target="basicData">
+            <i class="fa fa-address-card"></i>
+                {% trans from "labels" %}label.basic_data{% endtrans %}
+            </a>
+        </li>
+
+        <li>
+            <a data-toggle="tab" data-target="#systemData" target="systemData"><i class="fa fa-lock"></i>
+            {% trans from "labels" %}label.system_data{% endtrans %}
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="basicData" class="tab-pane active">
+            <div class="row">
+                {{ toolbox.portlet('label.personal_data', '', personal_data, 6) }}
+                {{ toolbox.portlet('label.contact_data', '', contact_data, 6, '335px') }}
+            </div>
+        </div>
+
+        <div id="systemData" class="tab-pane">
+            <div class="row">
+                {{ toolbox.portlet('label.account_data','' , account_data, 6, '250px') }}
+                {{ toolbox.portlet('label.change_password','' , password_data, 6, '250px') }}
+            </div>
+        </div>
+    </div>
+    
+    {{ form_end(edit_form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    {% javascripts
+        'bundles/smartcitypanel/js/User.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+
+{% endblock %}
+
+{% block documentReady %}
+    User.init('edit');
+{% endblock %}

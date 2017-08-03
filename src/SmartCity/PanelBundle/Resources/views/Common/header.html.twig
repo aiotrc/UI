@@ -1,0 +1,272 @@
+{#
+    - for notidications header , we need an ajax request to give this output:
+        json (
+            @all:    int, //count of user's unseen notifs
+            @unseen: int //count of user's unseen notifs
+        )
+
+    - and for the notifications details we need a json like this one:
+        json {
+            @timeage: string ,  // a string with format like 'now' , '1 hours later' and etc in user's locale
+            @level:    enum ,   // an enum with this valid values: 'danger' , 'warning' , 'info' , 'success'
+            @message: string ,  // the content of the notification message
+        }
+#}
+{% set countUserNotifications = {
+    all : 12,
+    unseen : 10
+} %}
+
+{% set notifications = {
+    1 : {
+        timeago:'الان',
+        level:'success',
+        message:'نرم افزار بروزرسانی شد'
+    },
+    2 : {
+        timeago:'۲ دقیقه پیش',
+        level:'danger',
+        message:'تلاش برای ورود ناموفق به سیستم'
+    },
+    3 : {
+        timeago:'۱ ساعت پیش',
+        level:'warning',
+        message:'مشکل تاریخ در سیستم'
+    } ,
+    4 : {
+        timeago:'۱ ساعت پیش',
+        level:'info',
+        message:'پیام جدید برای شما از طرف مدیریت'
+    }
+} %}
+
+{#
+    - for inbox header , we need an ajax request to give this output:
+        json (
+            @all:    int, //count of user's unseen messages
+            @unseen: int //count of user's  unseen messages
+        )
+    - and for the message details we need a json like this one:
+        json {
+            @id:        int ,     // id of the message
+            @from:      string ,  // sender's fullname
+            @userImage: string ,  // sender's profile image
+            @timeago:   string ,  // a string with format like 'now' , '1 hours later' and etc in user's locale
+            @text:      string ,  // the content of the message with 35 character limit
+        }
+#}
+{% set countUserMessages = {
+    all : 40,
+    unread : 13
+} %}
+
+{% set messages = {
+    1 : {
+        id : 1,
+        from:'رضا سیف',
+        userImage: '',
+        timeago:'۲ دقیقه پیش',
+        text : 'برای بحث آی تی بهتره از سیستم ...'
+    }
+} %}
+
+
+
+<!-- BEGIN HEADER -->
+<div class="page-header navbar navbar-fixed-top">
+
+    <!-- BEGIN HEADER INNER -->
+    <div class="page-header-inner">
+
+        {# BEGIN LOGO #}
+            <div class="page-logo">
+                <a href="/">
+                    <span class="logo-default">Smart City</span>
+                    {# {% image 'bundles/smartcitypanel/images/logo.jpg' %} #}
+                    {# <img src="{{ asset_url }}" alt="logo" class="logo-default" width="100px"/> #}
+                    {# {% endimage %} #}
+                </a>
+
+                <div class="menu-toggler sidebar-toggler">
+                    <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+                </div>
+            </div>
+        {# END LOGO #}
+
+        {# BEGIN HEADER SEARCH BOX #}
+            {# <form class="search-form search-form-expanded" action="extra_search.html" method="GET">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="جست..." name="query">
+                    <span class="input-group-btn">
+                    <a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
+                    </span>
+                </div>
+            </form> #}
+        {# END HEADER SEARCH BOX #}
+
+        {# BEGIN RESPONSIVE MENU TOGGLER #}
+            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+            </a>
+        {# END RESPONSIVE MENU TOGGLER #}
+
+        {# TODO: Create Notification Center for The Users #}
+        {# TODO: Create Messaging Entity for The Users #}
+        {# TODO: Create Tasks Entity for the Users#}
+
+        {# BEGIN TOP NAVIGATION MENU #}
+        <div class="top-menu">
+            <ul class="nav navbar-nav pull-right">
+
+                {# BEGIN NOTIFICATION DROPDOWN #}
+                {# <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                    
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                       data-close-others="true">
+                        <i class="icon-bell"></i>
+                        <span class="badge badge-default">
+                        {{ countUserNotifications.all }}
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="external">
+                            <h3>
+                                <span class="bold">{{ countUserNotifications.unseen }}</span> {% trans from 'labels' %}
+                                label.notification.unseen{% endtrans %}</h3>
+                            <a href="#">{% trans from 'labels' %}label.notification.view_all{% endtrans %}</a>
+                        </li>
+
+                        <li>
+                            <ul class="dropdown-menu-list scroller" style="height: 250px;"
+                                data-handle-color="#637283">
+                                {% for notifItem in notifications %}
+                                    {% if notifItem.level == 'danger' %}
+                                        <li>
+                                            <a href="javascript:;">
+                                                <span class="time">{{ notifItem.timeago }}</span>
+                                                    <span class="details">
+                                                    <span class="label label-sm label-icon label-danger"> <i class="fa fa-bolt"></i>
+                                                    </span>{{ notifItem.message }} 
+                                                </span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if notifItem.level == 'warning' %}
+                                        <li>
+                                            <a href="javascript:;">
+                                                <span class="time">{{ notifItem.timeago }}</span>
+                                                    <span class="details">
+                                                    <span class="label label-sm label-icon label-warning"><i class="fa fa-bell-o"></i>
+                                                    </span>{{ notifItem.message }}
+                                                </span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if notifItem.level == 'info' %}
+                                        <li>
+                                            <a href="javascript:;">
+                                                <span class="time">{{ notifItem.timeago }}</span>
+                                                    <span class="details">
+                                                    <span class="label label-sm label-icon label-info"><i class="fa fa-bullhorn"></i>
+                                                    </span>{{ notifItem.message }}
+                                                </span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% if notifItem.level == 'success' %}
+                                        <li>
+                                            <a href="javascript:;">
+                                                <span class="time">{{ notifItem.timeago }}</span>
+                                                    <span class="details">
+                                                    <span class="label label-sm label-icon label-success">
+                                                    <i class="fa fa-plus"></i>
+                                                    </span>{{ notifItem.message }}
+                                                </span>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </li> #}
+                {# END NOTIFICATION DROPDOWN #}
+                
+                {# BEGINN INBOX DROPDOWN #}
+                {# <li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                       data-close-others="true">
+                        <i class="icon-envelope-open"></i>
+                        <span class="badge badge-default">{{ countUserMessages.all }}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="external">
+                            <h3><span class="bold">{{ countUserMessages.unread }}</span> {% trans from 'labels' %}
+                                label.message.unread {% endtrans %}</h3>
+                            <a href="#">{% trans from 'labels' %}label.message.view_all{% endtrans %}</a>
+                        </li>
+                        <li>
+                            <ul class="dropdown-menu-list scroller" style="height: 275px;"
+                                data-handle-color="#637283">
+
+                                {% for message in messages %}
+                                    <li><a href="#{{ message.id }}">
+                                        <span class="photo">
+                                        <img src="{{ message.userImage }}" class="img-circle" alt="">
+                                        </span>
+                                        <span class="subject">
+                                        <span class="from">
+                                        {{ message.from }}</span>
+                                        <span class="time">{{ message.timeago }}</span>
+                                        </span>
+                                        <span class="message">
+                                            {{ message.text }}</span>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </li> #}
+                {# END INBOX DROPDOWN #}
+
+                {# BEGIN USER LOGIN DROPDOWN #}
+                <li class="dropdown dropdown-user">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                       data-close-others="true">
+
+                        {% image 'bundles/smartcitypanel/assets/admin/layout/img/avatar.png' %}
+                        <img src="{{ asset_url }}" class="img-circle" alt=""/>
+                        {% endimage %}
+                        <span class="username username-hide-on-mobile">
+                        {{ app.user.firstname }} {{ app.user.lastname }} </span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-default">
+                        <li>
+                            <a href="{{path('panel_user_edit', {id: app.user.id})}}">
+                                <i class="icon-user"></i>
+                                {% trans from 'labels' %}label.user.data{% endtrans %}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('panel_auth_logout') }}">
+                                <i class="icon-key"></i>
+                                {% trans from 'labels' %}label.logout{% endtrans %}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {# END USER LOGIN DROPDOWN #}
+
+            </ul>
+        </div>
+        {# END TOP NAVIGATION MENU #}
+
+    </div>
+    <!-- END HEADER INNER -->
+
+</div>
+<!-- END HEADER -->

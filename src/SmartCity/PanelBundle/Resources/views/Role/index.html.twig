@@ -1,0 +1,32 @@
+{% extends 'SmartCityPanelBundle:Common:base.html.twig' %}
+
+{% block title %}
+    {% trans from 'labels' %}label.role.list{% endtrans %}
+{% endblock title %}
+
+{% block body -%}
+
+    <div class="page-bar">
+        {% set breadcrumbs_items = 
+            [
+                ['label.role.list'|trans([], 'labels'), '#' ]
+            ] 
+        %}
+        {{ toolbox.breadcrumbs(breadcrumbs_items) }}
+
+        <div class="page-toolbar">
+            <div class="btn-group pull-left">
+                <a href="{{ path('panel_role_new') }}" class="btn blue btn"><i class="fa fa-plus-circle"></i>  {% trans from "labels" %}label.role.new{% endtrans %}</a>
+            </div>
+        </div>
+    </div>
+
+    {{ datatable_render_html(datatable) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ datatable_render_js(datatable) }}
+{% endblock %}
+

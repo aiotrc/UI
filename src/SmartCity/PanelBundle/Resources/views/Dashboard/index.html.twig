@@ -1,0 +1,27 @@
+{% extends '@SmartCityPanel/Common/base.html.twig' %}
+
+
+{% block stylesheets %}
+	{{parent()}}
+
+	<style>
+		.page-title{
+			display: none;
+		}
+	</style>      
+{% endblock %}
+
+{% block body %}
+	<div style="text-align:center;">
+
+		{# {{ dump(domain) }} #}
+		<div style="text-align:center;">
+		    <h1 style="margin-bottom: 70px">سامانه مدیریت سنسورهای هوشمند شهری</h1>
+		    {% image 'bundles/smartcitypanel/images/smartcity_bg.jpg' %}
+		    	<img src="{{ asset_url }}" width="750px" />
+		    {% endimage %}
+	    </div>
+	</div>
+{% endblock %}
+
+

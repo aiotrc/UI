@@ -1,0 +1,39 @@
+jahadPlatform_locale:
+    resource:   "@SmartCityPanelBundle/Controller/LocaleController.php"
+    type:       annotation
+    prefix:     /language/{_locale}
+
+jahadPlatform_panel:
+    resource:   "@SmartCityPanelBundle/Controller/DashboardController.php"
+    type:       annotation
+    prefix:     /
+
+jahadPlatform_panel_auth:
+    resource:   "@SmartCityPanelBundle/Controller/AuthController.php"
+    type:       annotation
+    prefix:     /auth
+
+jahadPlatform_panel_action:
+    resource:   "@SmartCityPanelBundle/Controller/ActionController.php"
+    type:       annotation
+    prefix:     /action
+
+jahadPlatform_panel_action_group:
+    resource:   "@SmartCityPanelBundle/Controller/ActionGroupController.php"
+    type:       annotation
+    prefix:     /action-group
+
+jahadPlatform_panel_role:
+    resource:   "@SmartCityPanelBundle/Controller/RoleController.php"
+    type:       annotation
+    prefix:     /role
+
+jahadPlatform_panel_user:
+    resource:   "@SmartCityPanelBundle/Controller/UserController.php"
+    type:       annotation
+    prefix:     /user
+
+jahadPlatform_panel_province:
+    resource:   "@SmartCityPanelBundle/Controller/ProvinceController.php"
+    type:       annotation
+    prefix:     /province

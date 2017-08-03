@@ -1,0 +1,110 @@
+{% import 'SmartCityPanelBundle:Common:toolbox.html.twig' as toolbox %}
+
+<!DOCTYPE html>
+
+{#[if IE 8]> <html lang="{{ app.request.getLocale() }}" class="ie8 no-js"> <![endif]#}
+{#[if IE 9]> <html lang="{{ app.request.getLocale() }}" class="ie9 no-js"> <![endif]#}
+<!--[if !IE]><!-->
+<html lang="{{ app.request.getLocale() }}">
+<!--<![endif]-->
+
+{# BEGIN HEAD #}
+<head>
+    <meta charset="utf-8"/>
+
+    <title>{% block title %}سامانه مدیریت سنسورهای هوشمند شهری{% endblock title %}</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+    <meta content="pooria barghi" name="author"/>
+    <meta content="pooria.barghi@gamil.com" name="email"/>
+    <meta name="robots" content="noindex,nofollow">
+
+    {# {% image 'bundles/smartcitypanel/images/favicon.jpg' %}
+        <link rel="icon" type="image/png" href="{{ asset_url }}" />
+    {% endimage %} #}
+
+    {% block stylesheets %}
+        {% include 'SmartCityPanelBundle:Common:stylesheets.html.twig' %}
+    {% endblock %}
+
+    {% block javascripts %}
+        {% include 'SmartCityPanelBundle:Common:javascripts.html.twig' %}
+    {% endblock %}
+
+    {# BEGIN PAGE LEVEL PLUGIN STYLES #}
+    {# END PAGE LEVEL PLUGIN STYLES #}
+
+    {# BEGIN PAGE STYLES #}
+    {# END PAGE STYLES #}
+</head>
+{# END HEAD #}
+
+{# BEGIN BODY #}
+{# DOC: Apply "page-header-fixed-mobile" and "page-footer-fixed-mobile" class to body element to force fixed header or footer in mobile devices #}
+{# DOC: Apply "page-sidebar-closed" class to the body and "page-sidebar-menu-closed" class to the sidebar menu element to hide the sidebar by default #}
+{# DOC: Apply "page-sidebar-hide" class to the body to make the sidebar completely hidden on toggle #}
+{# DOC: Apply "page-sidebar-closed-hide-logo" class to the body element to make the logo hidden on sidebar toggle #}
+{# DOC: Apply "page-sidebar-hide" class to body element to completely hide the sidebar on sidebar toggle #}
+{# DOC: Apply "page-sidebar-fixed" class to have fixed sidebar #}
+{# DOC: Apply "page-footer-fixed" class to the body element to have fixed footer #}
+{# DOC: Apply "page-sidebar-reversed" class to put the sidebar on the right side #}
+{# DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu #}
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-sidebar-fixed">
+
+{# <div id="main-loader">
+    <div class="loader"></div>
+</div> #}
+
+{% include 'SmartCityPanelBundle:Common:header.html.twig' %}
+
+<div class="clearfix"></div>
+
+{# BEGIN CONTAINER #}
+<div class="page-container">
+    
+    {% include 'SmartCityPanelBundle:Common:sidebar.html.twig' %}
+
+    {# BEGIN CONTENT #}
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            
+            {% block modals %}
+                {% include 'SmartCityPanelBundle:Common:modal.html.twig' %}
+            {% endblock %}
+            
+            {# BEGIN PAGE TITLE #}
+            <h3 class="page-title">{{ block('title') }}</h3>
+            {# END PAGE TITLE #}
+        
+            <div class="row">
+                <div class="col-md-12">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {# END CONTENT #}
+
+</div>
+{# END CONTAINER #}
+
+{% include 'SmartCityPanelBundle:Common:footer.html.twig' %}
+
+<script>
+    jQuery(document).ready(function() {
+        Metronic.init(); // init metronic core components
+        Layout.init(); // init current layout
+        Demo.init(); // init demo features
+        BackendFramework.init(); // init SmartCity panel framework
+        TableUtil.init(); // datatable related Utilities
+        {% block documentReady %}{% endblock %}
+        
+        $('a[data-target=#'+BackendFramework.getQueryVariable('target')+']').trigger('shown.bs.tab')
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+{% extends 'SmartCityPanelBundle:Auth:base.html.twig' %}
+
+{% block body %}
+    <div class="login">
+        <br>
+        <div class="logo text-center">
+            <h2 class="font-green">سامانه مدیریت سنسورهای هوشمند شهری</h2>
+        </div>
+        <div class="content">
+            <!-- BEGIN LOGIN FORM -->
+            <form class="login-form" action="{{ path("panel_auth_login_check") }}" method="POST">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <br>
+                <div class="form-title font-green" style="text-align:center; font-size:25px">{% trans from 'labels' %}label.login{% endtrans %}</div>
+
+                {% if error %}
+                    <div class="Metronic-alerts alert alert-warning note-bordered fade in">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                        {{ error.messageKey|trans([], 'labels') }}
+                    </div>
+                {% endif %}
+                <div class="alert alert-danger display-hide">
+                    <button class="close" data-close="alert"></button>
+                    <span>{% trans from 'labels' %}label.user_pass_empty{% endtrans %}</span>
+                </div>
+
+                <div class="form-group">
+                    <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
+                    <label class="control-label visible-ie8 visible-ie9">
+                        {% trans from 'labels' %}label.username{% endtrans %}
+                    </label>
+                    <div class="input-icon">
+                        <i class="fa fa-user"></i>
+                        <input class="form-control placeholder-no-fix" type="text" autocomplete="off"
+                               placeholder="{% trans from 'labels' %}label.username{% endtrans %}"
+                               name="_username"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label visible-ie8 visible-ie9">{% trans from 'labels' %}label.password{% endtrans %}</label>
+                    <div class="input-icon">
+                        <i class="fa fa-lock"></i>
+                        <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="{% trans from 'labels' %}label.password{% endtrans %}" name="_password"/>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <label class="checkbox rememberme">
+                        <input type="checkbox" class="icheck" name="_remember_me" value="1"/> {% trans from 'labels' %}
+                        label.remember_me{% endtrans %} 
+                    </label>
+                    <button type="submit" class="btn green-haze pull-right">
+                        {% trans from 'labels' %}label.login{% endtrans %} <i class="m-icon-swapleft m-icon-white"></i>
+                    </button>
+                </div>
+                <div class="forget-password">
+                    {# <p>
+                        <a href="" id="forget-password">
+                            {% trans from 'labels' %}label.forget_password.title{% endtrans %}
+                        </a>
+                    </p> #}
+
+                    {# <p>
+                        {% if  app.request.locale == "fa" %}
+                            <a href="{{ path('panel_locale_change', {_locale: 'en'}) }}" class="btn btn-xs blue">{% trans from 'labels' %}label.locale.en{% endtrans %}</a>
+                        {% endif %}
+
+                        {% if app.request.locale == "en" %}
+                            <a href="{{ path('panel_locale_change', {_locale: 'fa'}) }}" class="btn btn-xs blue">{% trans from 'labels' %}label.locale.fa{% endtrans %}</a>
+                        {% endif %}
+                    </p> #}
+                </div>
+            </form>
+            <!-- END LOGIN FORM -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% stylesheets 
+                
+        'bundles/smartcitypanel/assets/admin/pages/css/login.css'
+
+        filter='cssrewrite'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+{% endblock %}

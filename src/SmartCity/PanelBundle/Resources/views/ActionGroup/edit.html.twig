@@ -1,0 +1,75 @@
+{% extends 'SmartCityPanelBundle:Common:base.html.twig' %}
+{% import 'SmartCityPanelBundle:Common:form.html.twig' as _t %}
+
+{% block title %}
+    {% trans with {'%name%': edit_form.title.vars["value"]} from "labels" %}label.actiongroup.edit{% endtrans %}
+{% endblock title %}
+
+{% form_theme edit_form _t %}
+
+{% block body -%}
+
+    {{ form_start(edit_form) }}
+    <div class="page-bar">
+
+        {% set breadcrumbs_items = 
+            [
+                ['label.actiongroup.list'|trans([], 'labels'), path('panel_action_group_index') ],
+                ['label.actiongroup.edit'|trans({'%name%': edit_form.title.vars["value"]}, "labels"), '' ]
+            ] 
+        %}
+        {{ toolbox.breadcrumbs(breadcrumbs_items) }}
+
+        <div class="btn-group pull-left">
+            {{ form_widget(edit_form.submit) }}
+        </div>
+
+    </div>
+
+    {% set basic_data %}
+        {{ form_row(edit_form.title) }}
+        {{ form_row(edit_form.code) }}
+        {{ form_row(edit_form.visible) }}
+        
+    {% endset %}
+
+    {% set actions_data %}
+        <div class="form-group">
+            <div class="col-sm-12">
+                <input type="text" id="filter_input" class="form-control" placeholder="Filter">
+            </div>
+        </div>
+        <hr>
+        {{ form_widget(edit_form.actions) }}
+    {% endset %}
+
+    <div class="row">
+        {{ toolbox.portlet('label.basic_data', '', basic_data) }}
+        {{ toolbox.portlet('label.actions', '', actions_data) }}
+    </div>
+
+    {{ form_end(edit_form) }}
+    {# {{ form(delete_form) }} #}
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    
+    {% javascripts
+        'bundles/smartcitypanel/js/ItemFiltering.js'
+
+        filter='?jsqueeze'
+    %}
+        <script src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+
+{% endblock %}
+
+{% block documentReady %}
+
+    ItemFiltering.actionObj = '#jahadPlatform_userbundle_actiongroup_actions';
+    ItemFiltering.init();
+    
+{% endblock %}

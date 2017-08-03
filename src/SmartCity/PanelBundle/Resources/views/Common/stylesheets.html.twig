@@ -1,0 +1,72 @@
+{% block stylesheets %}
+    
+    <!-- COMMON CSS -->
+    {% stylesheets 
+        'bundles/smartcitypanel/assets/global/plugins/font-awesome/css/font-awesome.min.css'
+        'bundles/smartcitypanel/assets/global/plugins/simple-line-icons/simple-line-icons.min.css'
+        'bundles/smartcitypanel/assets/global/plugins/bootstrap/css/bootstrap.min.css'
+        'bundles/smartcitypanel/assets/global/plugins/uniform/css/uniform.default.css'
+        'bundles/smartcitypanel/assets/global/plugins/bootstrap-toastr/toastr.min.css'
+        'bundles/smartcitypanel/assets/global/plugins/fancybox/source/jquery.fancybox.css'
+        'bundles/smartcitypanel/assets/global/plugins/icheck/skins/square/blue.css'
+        'bundles/smartcitypanel/assets/global/plugins/select2/dist/css/select2.min.css'
+        'bundles/smartcitypanel/assets/global/plugins/select2-bootstrap-theme/dist/select2-bootstrap.min.css'
+
+        filter='cssrewrite'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+
+    {% if app.request.getLocale() == 'en' %}
+    <!-- LTR CSS -->
+
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+
+        {% stylesheets 
+            
+            'bundles/smartcitypanel/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'
+            'bundles/smartcitypanel/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css'
+            'bundles/smartcitypanel/assets/global/plugins/pace/themes/pace-theme-flash.css'
+
+            'bundles/smartcitypanel/assets/global/css/components-md.css'
+            'bundles/smartcitypanel/assets/global/css/plugins-md.css'
+            'bundles/smartcitypanel/assets/admin/layout/css/layout.css'
+            'bundles/smartcitypanel/assets/admin/layout/css/themes/darkblue.css'
+            'bundles/smartcitypanel/assets/admin/layout/css/custom.css'
+            
+            'bundles/smartcitypanel/assets/admin/pages/css/profile.css'
+
+            filter='cssrewrite'
+        %}
+            <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+
+    {% else %}
+    <!-- RTL CSS -->
+        
+        {% stylesheets
+            
+            'bundles/smartcitypanel/assets/global/plugins/bootstrap/css/bootstrap-rtl.min.css'
+            'bundles/smartcitypanel/assets/global/plugins/bootstrap-switch/css/bootstrap-switch-rtl.min.css'
+            'bundles/smartcitypanel/assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap-rtl.css'
+            'bundles/smartcitypanel/assets/global/plugins/pace/themes/pace-theme-flash-rtl.css'
+            'bundles/smartcitypanel/assets/global/plugins/pwt.datepicker/dist/css/persian-datepicker-0.4.5.min.css'
+
+            'bundles/smartcitypanel/assets/global/css/components-md-rtl.css'
+            'bundles/smartcitypanel/assets/global/css/plugins-md-rtl.css'
+            'bundles/smartcitypanel/assets/admin/layout/css/layout-rtl.css'
+            'bundles/smartcitypanel/assets/admin/layout/css/themes/darkblue-rtl.css'
+            'bundles/smartcitypanel/assets/admin/layout/css/custom-rtl.css'
+
+            'bundles/smartcitypanel/assets/admin/pages/css/profile-rtl.css'
+
+            filter='cssrewrite'
+
+        %}
+            <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    
+    {% endif %}
+
+{% endblock %}
