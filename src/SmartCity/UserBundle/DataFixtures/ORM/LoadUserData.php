@@ -37,13 +37,11 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface
             $super_admin_user->setUsername("smartAdmin");
             $super_admin_user->setNationalCode("1234567891");
             $super_admin_user->setPlainPassword('123456');
-            $super_admin_user->setVisible(false);
             $super_admin_user->setType(UserConstants::TYPE_BACKEND);
             $super_admin_user->setStatus(UserConstants::STATUS_ACTIVE);
             $setCellphone = new PhoneNumber();
             $setCellphone->setRawInput('+989369286019');
             $super_admin_user->setCellphone($setCellphone);
-            $super_admin_user->setGlobal(true);
             $super_admin_user->addRole($this->getReference('super-admin-role'));
 
             $userModel->save($super_admin_user);
