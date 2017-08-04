@@ -40,6 +40,7 @@ class AppKernel extends Kernel
             new SmartCity\UserBundle\SmartCityUserBundle(),
             new SmartCity\CoreBundle\SmartCityCoreBundle(),
             new SmartCity\GeoBundle\SmartCityGeoBundle(),
+//            new SmartCity\ElasticBundle\ElasticBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
