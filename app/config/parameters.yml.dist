@@ -26,3 +26,8 @@ parameters:
     domain: smartcity.local
     project_name: "Smart City Platform"
     locale: fa
+
+    ## elastic
+    elastic_url: localhost:9200
+    elastic_index: test1
+    elastic_log_type: log
