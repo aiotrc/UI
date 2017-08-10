@@ -180,4 +180,29 @@ fos_elastica:
     clients:
         default: { host: localhost, port: 9200 }
     indexes:
-        app: ~
+        bank:
+          settings:
+            index:
+              analysis:
+                analyzer:
+                  my_analyzer:
+                    type: snowball
+                    language: English
+          types:
+            acount:
+              properties:
+                address: { boost: 10, analyzer: my_analyzer }
+                firstname:
+                lastname:
+              persistence:
+                driver: orm
+                model: Acme\DemoBundle\Entity\Article
+                provider: ~
+                finder: ~
+#          finder:
+#            account
+#            types:
+#              account:
+#                properties:
+#                  address: string
+#
