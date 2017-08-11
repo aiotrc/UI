@@ -1,0 +1,170 @@
+# import this object to http://beta.json-generator.com
+# this template can be accessible from: http://beta.json-generator.com/41iEQ5Uv7
+# minify jsons at https://codebeautify.org/jsonminifier
+
+# load sample data with
+curl -H "Content-Type: application/json" -XPOST 'localhost:9200/sensor/spec/_bulk?pretty&refresh' --data-binary "@specs.json"
+
+[
+    {
+        'repeat(100)': {
+			"device_id": '1_{{index(1)}}',
+			"type": '{{random("lamp", "thermometer", "gasmeter", "watermeter")}}',
+            "brand": '{{random("huawei", "zigbee")}}',
+            "location": {
+                "lon": '{{floating(44.5166, 59.7656)}}',
+                "lat": '{{floating(27.4888, 37.4400)}}'
+            },
+            "attributes": {
+                "weight": '{{integer(300, 2000)}}',
+                "height": '{{integer(10, 20)}}',
+                "width": '{{integer(10, 20)}}'
+            }
+        }
+    },
+  
+  	{
+        'repeat(100)': {
+			"device_id": '2_{{index(1)}}',
+			"type": '{{random("lamp", "thermometer", "gasmeter", "watermeter")}}',
+            "brand": '{{random("huawei", "zigbee")}}',
+            "location": {
+                "lon": '{{floating(44.5166, 59.7656)}}',
+                "lat": '{{floating(27.4888, 37.4400)}}'
+            },
+            "attributes": {
+                "weight": '{{integer(300, 2000)}}',
+                "height": '{{integer(10, 20)}}',
+                "width": '{{integer(10, 20)}}'
+            }
+        }
+    },
+  {
+        'repeat(100)': {
+			"device_id": '3_{{index(1)}}',
+			"type": '{{random("lamp", "thermometer", "gasmeter", "watermeter")}}',
+            "brand": '{{random("huawei", "zigbee")}}',
+            "location": {
+                "lon": '{{floating(44.5166, 59.7656)}}',
+                "lat": '{{floating(27.4888, 37.4400)}}'
+            },
+            "attributes": {
+                "weight": '{{integer(300, 2000)}}',
+                "height": '{{integer(10, 20)}}',
+                "width": '{{integer(10, 20)}}'
+            }
+        }
+    },
+  {
+        'repeat(100)': {
+			"device_id": '4_{{index(1)}}',
+			"type": '{{random("lamp", "thermometer", "gasmeter", "watermeter")}}',
+            "brand": '{{random("huawei", "zigbee")}}',
+            "location": {
+                "lon": '{{floating(44.5166, 59.7656)}}',
+                "lat": '{{floating(27.4888, 37.4400)}}'
+            },
+            "attributes": {
+                "weight": '{{integer(300, 2000)}}',
+                "height": '{{integer(10, 20)}}',
+                "width": '{{integer(10, 20)}}'
+            }
+        }
+    },
+  {
+        'repeat(100)': {
+			"device_id": '5_{{index(1)}}',
+			"type": '{{random("lamp", "thermometer", "gasmeter", "watermeter")}}',
+            "brand": '{{random("huawei", "zigbee")}}',
+            "location": {
+                "lon": '{{floating(44.5166, 59.7656)}}',
+                "lat": '{{floating(27.4888, 37.4400)}}'
+            },
+            "attributes": {
+                "weight": '{{integer(300, 2000)}}',
+                "height": '{{integer(10, 20)}}',
+                "width": '{{integer(10, 20)}}'
+            }
+        }
+    },
+  {
+        'repeat(100)': {
+			"device_id": '6_{{index(1)}}',
+			"type": '{{random("lamp", "thermometer", "gasmeter", "watermeter")}}',
+            "brand": '{{random("huawei", "zigbee")}}',
+            "location": {
+                "lon": '{{floating(44.5166, 59.7656)}}',
+                "lat": '{{floating(27.4888, 37.4400)}}'
+            },
+            "attributes": {
+                "weight": '{{integer(300, 2000)}}',
+                "height": '{{integer(10, 20)}}',
+                "width": '{{integer(10, 20)}}'
+            }
+        }
+    },
+  {
+        'repeat(100)': {
+			"device_id": '7_{{index(1)}}',
+			"type": '{{random("lamp", "thermometer", "gasmeter", "watermeter")}}',
+            "brand": '{{random("huawei", "zigbee")}}',
+            "location": {
+                "lon": '{{floating(44.5166, 59.7656)}}',
+                "lat": '{{floating(27.4888, 37.4400)}}'
+            },
+            "attributes": {
+                "weight": '{{integer(300, 2000)}}',
+                "height": '{{integer(10, 20)}}',
+                "width": '{{integer(10, 20)}}'
+            }
+        }
+    },
+  {
+        'repeat(100)': {
+			"device_id": '8_{{index(1)}}',
+			"type": '{{random("lamp", "thermometer", "gasmeter", "watermeter")}}',
+            "brand": '{{random("huawei", "zigbee")}}',
+            "location": {
+                "lon": '{{floating(44.5166, 59.7656)}}',
+                "lat": '{{floating(27.4888, 37.4400)}}'
+            },
+            "attributes": {
+                "weight": '{{integer(300, 2000)}}',
+                "height": '{{integer(10, 20)}}',
+                "width": '{{integer(10, 20)}}'
+            }
+        }
+    },
+  {
+        'repeat(100)': {
+			"device_id": '9_{{index(1)}}',
+			"type": '{{random("lamp", "thermometer", "gasmeter", "watermeter")}}',
+            "brand": '{{random("huawei", "zigbee")}}',
+            "location": {
+                "lon": '{{floating(44.5166, 59.7656)}}',
+                "lat": '{{floating(27.4888, 37.4400)}}'
+            },
+            "attributes": {
+                "weight": '{{integer(300, 2000)}}',
+                "height": '{{integer(10, 20)}}',
+                "width": '{{integer(10, 20)}}'
+            }
+        }
+    },
+  {
+        'repeat(100)': {
+			"device_id": '10_{{index(1)}}',
+			"type": '{{random("lamp", "thermometer", "gasmeter", "watermeter")}}',
+            "brand": '{{random("huawei", "zigbee")}}',
+            "location": {
+                "lon": '{{floating(44.5166, 59.7656)}}',
+                "lat": '{{floating(27.4888, 37.4400)}}'
+            },
+            "attributes": {
+                "weight": '{{integer(300, 2000)}}',
+                "height": '{{integer(10, 20)}}',
+                "width": '{{integer(10, 20)}}'
+            }
+        }
+    }
+]
