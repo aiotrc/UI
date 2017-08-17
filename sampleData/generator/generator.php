@@ -37,7 +37,7 @@ $types = [
         ]
     ],
     'specs' => [
-        'number_of_sample' => 20,
+        'number_of_sample' => 10,
         'variables' => [
             'device_id' => [
                 'type' => 1,
@@ -71,6 +71,30 @@ $types = [
                     'weight' => range(300, 2000, 0.1),
                     'height' => range(10, 20, 1),
                     'width' => range(10, 20, 1)
+                ]
+            ]
+        ]
+    ],
+    'conf' => [
+        'number_of_sample' => 10,
+        'variables' => [
+            'device_id' => [
+                'type' => 1,
+                'combination' => true,
+                'data' => [
+                    range(1,10, 1),
+                    range(1, 500, 1)
+                ]
+            ],
+            'time' => [
+                'type' => 1,
+                'combination' => false,
+                'data' => range(strtotime('2009-12-29 06:31:21'), strtotime('2009-12-29 09:31:21'), 1)
+            ],
+            'settings' => [
+                'type' => 2,
+                'variables' => [
+                    'on' => [true, false]
                 ]
             ]
         ]
