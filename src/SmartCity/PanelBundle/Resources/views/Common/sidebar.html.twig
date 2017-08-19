@@ -31,11 +31,13 @@
         {{ toolbox.sub_menu('label.actiongroup.list', path('panel_action_group_index'),'fa fa-flash') }}
     {{ toolbox.end_menu() }}
 
-     {# {% if app.user.hasRole('ROLE_SUPER_ADMIN') or app.user.hasRole('ROLE_ADMIN') %}  #}
+    {{ toolbox.menu('label.monitoring', '', path('panel_monitoring_index'), 'icon-bar-chart', false) }}
+    {{ toolbox.end_menu(false) }}
+
+    {# {% if app.user.hasRole('ROLE_SUPER_ADMIN') or app.user.hasRole('ROLE_ADMIN') %}  #}
     {# {% endif %} #}
 
-        
-
+    
     {# {% endif %} #}
     
     

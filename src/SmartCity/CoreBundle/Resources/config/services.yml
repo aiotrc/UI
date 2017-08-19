@@ -50,7 +50,7 @@ services:
         tags:
           - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 
-     ## SmartCity Array Translator
+    ## SmartCity Array Translator
     SmartCity.captcha_service:
         class: SmartCity\CoreBundle\Services\CaptchaService
         arguments: [ '@service_container' ]
@@ -58,7 +58,6 @@ services:
     SmartCity.phone.service:
         class: SmartCity\CoreBundle\Services\PhoneService
         arguments: ['@service_container']
-
 
     SmartCity.auth_service:
         class: SmartCity\CoreBundle\Services\AuthService

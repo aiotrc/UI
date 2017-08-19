@@ -1,5 +1,0 @@
-OrderEdit = {
-
-	init: function(){
-	},
-}

@@ -31,8 +31,6 @@ return [
         'view' => 'مشاهده',
         'close' => 'ببند',
 
-        
-
         // ============================================= AUTHENTICATIONS
         'username' => 'نام کاربری',
         'password' => 'کلمه عبور',
@@ -174,6 +172,7 @@ return [
         'basic_data' =>  'اطلاعات پایه',
         'contact_data' => 'اطلاعات ارتباطی',
         'creation_data' => 'اطلاعات ساخت',
+        'monitoring' => 'مونیتورینگ'
     ],
 
 ];

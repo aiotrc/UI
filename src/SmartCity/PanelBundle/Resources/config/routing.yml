@@ -38,7 +38,7 @@ jahadPlatform_panel_province:
     type:       annotation
     prefix:     /province
 
-jahadPlatform_elastic_temp:
-    resource:   "@SmartCityPanelBundle/Controller/ElasticController.php"
+jahadPlatform_panel_monitoring:
+    resource:   "@SmartCityPanelBundle/Controller/MonitoringController.php"
     type:       annotation
-    prefix:     /elastic
+    prefix:     /monitoring
