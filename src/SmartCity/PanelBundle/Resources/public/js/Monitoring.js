@@ -130,6 +130,17 @@ Monitoring = {
     },
 
     getSensorDetail: function(sensor_id){
-        console.log(sensor_id);
+        $.ajax({
+            url: Routing.generate('panel_monitoring_map_marker_cluster'),
+            method: "POST",
+            data: map_params,
+        })
+	    .done(function(response) {
+            Monitoring.markers.clearLayers();
+	        Monitoring.makePoints(response.markers.buckets);
+    	})
+    	.fail(function(error) {
+        	BackendFramework.showNotif('error')
+    	});
     }
 }

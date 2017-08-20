@@ -50,7 +50,7 @@
 -- Dumping data for table `provinces`
 -- province codes provided from http://www.statoids.com/uir.html
 
-INSERT INTO `JahadUnits` (`id`, `title`, `code`) VALUES
+INSERT INTO `Provinces` (`id`, `title`, `code`) VALUES
 (1 , 'آذربایجان شرقی'     , 'EA'),
 (2 , 'آذربایجان غربی'     , 'WA'),
 (3 , 'اردبیل'             , 'AR'),

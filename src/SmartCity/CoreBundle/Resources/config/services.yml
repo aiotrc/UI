@@ -38,6 +38,11 @@ services:
         tags:
             - { name: console.command }
 
+    SmartCity.command.sample_data_generator:
+        class: SmartCity\CoreBundle\Console\Command\SampleDataGeneratorCommand
+        tags:
+            - { name: console.command }
+
     ## SmartCity Array Translator
     SmartCity.array_translator:
         class: SmartCity\CoreBundle\Services\ArrayTranslator
