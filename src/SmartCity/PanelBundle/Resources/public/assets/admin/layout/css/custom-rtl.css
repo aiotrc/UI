@@ -581,3 +581,27 @@ ul.nav-tabs a.has_error{
 	text-align: right;
 	direction: rtl;
 }
+
+
+
+/* map and markers  */
+.cluster-icon{
+	margin-right: -15px;
+	padding-top: 11px;
+	margin-top: -15px;
+	text-align: center;
+	width: 40px;
+	height: 40px;
+	z-index: 233;
+	border-radius: 50%;
+	background-color: #16a085;
+	/* box-shadow: 0 0 4px rgba(10, 10, 10, 0.5); */
+	opacity: 0.9; 
+	color: #fff
+}
+
+.marker-image{
+	margin-right: -11px;
+	margin-top: -11px;
+	/* opacity: 0.5 */
+}

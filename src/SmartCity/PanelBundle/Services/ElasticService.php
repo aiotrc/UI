@@ -62,7 +62,6 @@ class ElasticService
     ## map marker clustering query
     public function mapMarkerClusterQuery($mapBounds, $zoomLevel)
     {
-
         $searchParams = [
             'index' => ElasticService::$index,
             'type' => ElasticService::$spec,
@@ -91,32 +90,62 @@ class ElasticService
                                     'precision' => $zoomLevel //zoom can have values from 1 to 8
                                 ],
                                 "aggs" => [
-                                    "centroid" => [
-                                        "geo_centroid" => [
-                                            "field" => "location",
-                                        ]
+                                    "device" => [ // name of aggregation
+                                        "terms" => [
+                                            "script" => "doc['device_id'].value + '|' + doc['type'].value",
+                                            "size" => 1,
+                                        ],
                                     ]
                                 ]
-                                // test this aggs
-                                // "aggs" => [
-                                //     "device_id" => [
-                                //         "terms" => [
-                                //             "field" => "device_id",
-                                //             "size" => 1,
-                                //         ]
-                                //     ]
-                                // ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+        
+        $response = ElasticService::$client->search($searchParams);
+        return $response;
+    }
 
-                                // "include_source": {
-                                //     "top_hits": {
-                                //         "size": 1,
-                                //         "_source": {
-                                //         "include": [
-                                //             "date", "ip", "dev_type", "env", "cpu_usage"
-                                //         ]
-                                //         }
-                                //     }
-                                // }
+    ## map marker clustering query
+    public function sensorSpecQuery($sensorId)
+    {
+        $searchParams = [
+            'index' => ElasticService::$index,
+            'type' => ElasticService::$spec,
+            "size" => 0,
+            'body' => [
+                'aggs' => [
+                    'clustering' => [ // name of aggregation
+                        'filter' => [
+                            'geo_bounding_box' => [ 
+                                'location' => [ // geo_point field
+                                    'top_left' => [
+                                        'lat' => $mapBounds['top_left_lat'],
+                                        'lon' => $mapBounds['top_left_lon']
+                                    ],
+                                    'bottom_right' => [
+                                        'lat' => $mapBounds['bottom_right_lat'],
+                                        'lon' => $mapBounds['bottom_right_lon']
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'aggs' =>[
+                            'markers' => [ // name of aggregation
+                                'geohash_grid' => [
+                                    'field' => 'location', // filed on which the aggregation need to work
+                                    'precision' => $zoomLevel //zoom can have values from 1 to 8
+                                ],
+                                "aggs" => [
+                                    "device" => [ // name of aggregation
+                                        "terms" => [
+                                            "script" => "doc['device_id'].value + '|' + doc['type'].value",
+                                            "size" => 1,
+                                        ],
+                                    ]
+                                ]
                             ]
                         ]
                     ]

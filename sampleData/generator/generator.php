@@ -11,7 +11,7 @@ $elastic_config = [
 ];
 
 $types = [
-    'logs' => [
+    'log' => [
         'number_of_sample' => 10,
         'variables' => [
             'device_id' => [
@@ -36,8 +36,8 @@ $types = [
             ]
         ]
     ],
-    'specs' => [
-        'number_of_sample' => 10,
+    'spec' => [
+        'number_of_sample' => 100000,
         'variables' => [
             'device_id' => [
                 'type' => 1,
