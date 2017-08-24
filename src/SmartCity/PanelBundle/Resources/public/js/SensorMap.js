@@ -1,4 +1,4 @@
-Monitoring = {
+SensorMap = {
 
     map: null,
     markers: null,
@@ -13,9 +13,9 @@ Monitoring = {
     initMap: function(){
         
         // init map and tiles
-        Monitoring.map = L.map('mapid', {
+        SensorMap.map = L.map('sensormap', {
             center: [32.4356, 53.9209],
-            zoom: 10, // 5
+            zoom: 12, // 5
             minZoom: 4,
             maxzoom: 12
         });
@@ -23,16 +23,16 @@ Monitoring = {
         // http://{s}.tile.osm.org/{z}/{x}/{y}.png
         var tiles = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoicG9vdHJpYSIsImEiOiJjajZiOGJ1amsxZXgzMndvOThvZTJ1bnY3In0.hcwyouLNbyr6Qsl4-nmpsg', {
             id: 'mapbox.streets',
-        }).addTo(Monitoring.map);
+        }).addTo(SensorMap.map);
         
 
         // init map listeners
-        Monitoring.map.on('load', function(e){Monitoring.search()});
-        Monitoring.map.on('zoomend dragend',function(e){Monitoring.search();});
+        SensorMap.map.on('load', function(e){SensorMap.search()});
+        SensorMap.map.on('zoomend dragend',function(e){SensorMap.search();});
 
 
         // init marker clustering
-        Monitoring.markers = L.markerClusterGroup({
+        SensorMap.markers = L.markerClusterGroup({
         zoomToBoundsOnClick: true,
         removeOutsideVisibleBounds: true,
         animate: false,
@@ -48,7 +48,7 @@ Monitoring = {
             return new L.DivIcon({ html: '<div class=cluster-icon leaflet-zoom-animated leaflet-clickable" tabindex="0"><div><span>'+markerCount+'</span></div></div>' });
             }
         });
-        Monitoring.map.addLayer(Monitoring.markers);
+        SensorMap.map.addLayer(SensorMap.markers);
     },
 
     initSidebar: function(){
@@ -66,16 +66,16 @@ Monitoring = {
     getMapParams: function(){
 
         // Get map bound
-        var bound = Monitoring.map.getBounds();
+        var bound = SensorMap.map.getBounds();
 
-        var bound_object = {
+        var boundObject = {
             "top_left_lat": bound.getNorthWest().wrap().lat,
             "top_left_lon": bound.getNorthWest().wrap().lng,
             "bottom_right_lat": bound.getSouthEast().wrap().lat,
             "bottom_right_lon": bound.getSouthEast().wrap().lng,
         }
 
-        var mapZoom = Monitoring.map.getZoom();        
+        var mapZoom = SensorMap.map.getZoom();        
         var zoom = 2;
 
         if(mapZoom >= 5 && mapZoom <= 8){
@@ -92,7 +92,7 @@ Monitoring = {
         }
 
         return {
-            'bound': bound_object,
+            'bound': boundObject,
             'zoomLevel': zoom
         }
     },
@@ -106,8 +106,8 @@ Monitoring = {
             data: map_params,
         })
 	    .done(function(response) {
-            Monitoring.markers.clearLayers();
-	        Monitoring.makePoints(response.markers.buckets);
+            SensorMap.markers.clearLayers();
+	        SensorMap.makePoints(response.markers.buckets);
     	})
     	.fail(function(error) {
         	BackendFramework.showNotif('error')
@@ -126,7 +126,7 @@ Monitoring = {
 
 
             if (cluster.doc_count == 1){                
-                marker_html = '<div data-id="'+specs[0]+'" class="marker-image"><img width="32px" src="'+Monitoring.imagesSource + specs[1]+'.png"></div>';
+                marker_html = '<div data-id="'+specs[0]+'" class="marker-image"><img width="32px" src="'+SensorMap.imagesSource + specs[1]+'.png"></div>';
             }
             
             
@@ -135,46 +135,62 @@ Monitoring = {
                 icon: marker_icon 
             });
 
-            if (cluster.doc_count == 1){                
-                marker.on('click', function(){ Monitoring.getSensorDetail(specs[0]) });
-            }
+            var popup_content = 
+                '<div class="custom-content">' +
+                    '<table class="table table-bordered table-striped">' +
+                        '<tr>' +
+                            '<td>شناسه</td>' +
+                            '<td>'+specs[0]+'</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                            '<td>نوع دستگاه</td>' +
+                            '<td>'+specs[1]+'</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                            '<td>شرکت سازنده</td>' +
+                            '<td>'+specs[2]+'</td>' +
+                        '</tr>' +
+                    '</table>' +
+                    '<a data-id="'+specs[0]+'" class="get-log btn btn-sm blue-hoki">مشاهده گزارشات</a>' +
+                '</div>'
+            ;
+            var popupContainer = $(popup_content);
 
-            marker.bindPopup(''+cluster.doc_count);
+            popupContainer.on('click', '.get-log', function() {
+                sensorId = $(this).attr('data-id');
+                btn = $(this)
+                SensorMap.getSensorLog(sensorId, btn);
+            });
+
+            marker.bindPopup(popupContainer[0]);
 
             marker.count = cluster.doc_count;
             markerList.push(marker);
         });
-        Monitoring.markers.addLayers(markerList);
+        SensorMap.markers.addLayers(markerList);
     },
 
-    getSensorDetail: function(sensorId){
+    getSensorLog: function(sensorId, btn){
+        var btn_label = btn.text();
+        btn.html(BackendFramework.loadingGif);
+
         $.ajax({
-            url: Routing.generate('panel_sensor_spec'),
+            url: Routing.generate('panel_sensor_log'),
             method: "POST",
             data: {
                 sensorId: sensorId
             },
         })
 	    .done(function(response) {
-            var sensor = response
-            $('#sensor-detail').empty().addClass('visible');
-
-            detail_body = 
-                '<div class="body">' +
-                    '<img class="icon" src="'+Monitoring.imagesSource + sensor.type+'.png">' +
-                    '<div>شناسه : ' + sensor.device_id + '</div>' +
-                    '<div>نوع دستگاه : ' + sensor.type + '</div>' +
-                    '<div>شرکت سازنده : ' + sensor.brand + '</div>' +
-                    '<a class="btn blue-hoki">مشاهده اطلاعات</a>'
-                '</div>'
-            ;
-
-            $('#sensor-detail').append(detail_body);
-
             console.log(response);
     	})
     	.fail(function(error) {
         	BackendFramework.showNotif('error')
-    	});
+        })
+        .always(function(){
+            setTimeout(function(){
+                btn.html(btn_label)
+            }, 2000)
+        })
     }
 }

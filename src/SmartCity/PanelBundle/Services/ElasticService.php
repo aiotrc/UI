@@ -92,7 +92,7 @@ class ElasticService
                                 "aggs" => [
                                     "device" => [ // name of aggregation
                                         "terms" => [
-                                            "script" => "doc['device_id'].value + '|' + doc['type'].value",
+                                            "script" => "doc['device_id'].value + '|' + doc['type'].value + '|' + doc['brand'].value",
                                             "size" => 1,
                                         ],
                                     ]

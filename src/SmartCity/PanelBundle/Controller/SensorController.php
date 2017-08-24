@@ -61,6 +61,21 @@ class SensorController extends Controller
         return new JsonResponse($result['hits']['hits'][0]['_source']);
     }
 
+    /**
+     * @Route("/log" , name="panel_sensor_log", options={"expose"=true})
+     * @FrontendAccessible(adminAccessible=true)
+     * @Method("POST")
+     */
+     public function logAction(Request $request)
+     {
+ 
+         $senosrId = $request->get('sensorId');
+        //  $elasticService = $this->get('SmartCity.elastic.service');
+        //  $result = $elasticService->sensorSpecQuery($senosrId);
+ 
+         return new JsonResponse([]);
+     }
+
 
 
 }

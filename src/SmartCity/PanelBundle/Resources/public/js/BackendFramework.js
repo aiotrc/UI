@@ -1,5 +1,6 @@
 BackendFramework = {
 
+	loadingGif: '<img width="16" height="16" src="/bundles/smartcitypanel/images/loading2.gif" />',
 	iCheckOptions:{
 		checkboxClass: 'icheckbox_square-blue',
 		radioClass: 'iradio_square-blue',

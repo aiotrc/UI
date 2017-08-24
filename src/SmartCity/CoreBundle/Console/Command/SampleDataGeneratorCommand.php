@@ -37,7 +37,7 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
                     'time' => [
                         'type' => 1,
                         'combination' => false,
-                        'data' => range(strtotime('2009-12-29 06:31:21'), strtotime('2009-12-29 09:31:21'), 1)
+                        'data' => range(strtotime('2016-12-20 06:31:21'), strtotime('2016-12-29 09:31:21'), 1)
                     ],
                     'state' => [
                         'type' => 2,
@@ -49,7 +49,7 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
                 ]
             ],
             'spec' => [
-                'number_of_sample' => 200000,
+                'number_of_sample' => 1,
                 'variables' => [
                     'device_id' => [
                         'type' => 1,
@@ -131,7 +131,7 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
                     if ($values['type'] == 1) {
                         if ($values['combination']) {
                             // $result[$variable] = $values['data'][0][array_rand($values['data'][0])].'_'.$values['data'][1][array_rand($values['data'][1])];
-                            $result[$variable] = $i+400001;
+                            $result[$variable] = $i;
                         }
                         else {
                             if ($variable=='time') {

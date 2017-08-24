@@ -584,8 +584,10 @@ ul.nav-tabs a.has_error{
 }
 
 
+/* ----------------------------------------------------- map and markers  */
+#sensormap { height: 400px; }
 
-/* map and markers  */
+/* marker icon */
 .cluster-icon{
 	margin-right: -15px;
 	padding-top: 11px;
@@ -598,43 +600,37 @@ ul.nav-tabs a.has_error{
 	background-color: #16a085;
 	/* box-shadow: 0 0 4px rgba(10, 10, 10, 0.5); */
 	opacity: 0.9; 
-	color: #fff
+	color: #fff;
+	outline: none;
 }
-
 .marker-image{
 	margin-right: -11px;
 	margin-top: -11px;
+	outline: none;
 }
-#sensor-detail{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
+
+/* marker popup */
+.leaflet-popup .leaflet-popup-close-button{
+	display: none;
+}
+
+.leaflet-popup .leaflet-popup-content-wrapper{
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.1);
+}
+.leaflet-popup .leaflet-popup-content{
+	margin: 10px;
+}
+.leaflet-popup .custom-content table{
+	margin-bottom: 10px;
+}
+.leaflet-popup .custom-content td{
+	text-align: right;
+	vertical-align: middle;
+	font-family: 'IRANSans';
+	font-size: 13px;
+}
+.leaflet-popup .custom-content {
 	text-align: center;
-	padding: 20px 0 0 0;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	width: 300px;
-	background-color: #fff;
-	box-shadow: 1px 0 5px rgba(100, 100, 100, 0.3);
-	z-index: 1000;
-
-	 -webkit-transform: translateX(-300px);
-	    -moz-transform: translateX(-300px);
-			 transform: translateX(-300px);
-			  
-	-webkit-transition: transform 300ms;
-	   -moz-transition: transform 300ms;
-	        transition: transform 300ms;
-}
-
-#sensor-detail > .body > * {
-	margin-bottom: 20px
-}
-
-#sensor-detail.visible{
-	 -webkit-transform: translateX(0); 
-	    -moz-transform: translateX(0); 
-			 transform: translateX(0); 
 }
