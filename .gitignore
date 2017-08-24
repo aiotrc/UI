@@ -39,8 +39,9 @@
 
 # Other
 .idea/
-dump.rdb
 .phpintel/
+sampleData
+dump.rdb
 components
 
 # libraries

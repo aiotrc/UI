@@ -31,7 +31,8 @@
         {{ toolbox.sub_menu('label.actiongroup.list', path('panel_action_group_index'),'fa fa-flash') }}
     {{ toolbox.end_menu() }}
 
-    {{ toolbox.menu('label.monitoring', '', path('panel_monitoring_index'), 'icon-bar-chart', false) }}
+    {{ toolbox.menu('label.sensor.management', 'Sensor', '#', 'icon-bulb') }}
+        {{ toolbox.sub_menu('label.sensor.map', path('panel_sensor_map'),'icon-map') }}
     {{ toolbox.end_menu(false) }}
 
     {# {% if app.user.hasRole('ROLE_SUPER_ADMIN') or app.user.hasRole('ROLE_ADMIN') %}  #}

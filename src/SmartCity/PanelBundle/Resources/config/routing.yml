@@ -1,44 +1,44 @@
-jahadPlatform_locale:
+smartCity_locale:
     resource:   "@SmartCityPanelBundle/Controller/LocaleController.php"
     type:       annotation
     prefix:     /language/{_locale}
 
-jahadPlatform_panel:
+smartCity_panel:
     resource:   "@SmartCityPanelBundle/Controller/DashboardController.php"
     type:       annotation
     prefix:     /
 
-jahadPlatform_panel_auth:
+smartCity_panel_auth:
     resource:   "@SmartCityPanelBundle/Controller/AuthController.php"
     type:       annotation
     prefix:     /auth
 
-jahadPlatform_panel_action:
+smartCity_panel_action:
     resource:   "@SmartCityPanelBundle/Controller/ActionController.php"
     type:       annotation
     prefix:     /action
 
-jahadPlatform_panel_action_group:
+smartCity_panel_action_group:
     resource:   "@SmartCityPanelBundle/Controller/ActionGroupController.php"
     type:       annotation
     prefix:     /action-group
 
-jahadPlatform_panel_role:
+smartCity_panel_role:
     resource:   "@SmartCityPanelBundle/Controller/RoleController.php"
     type:       annotation
     prefix:     /role
 
-jahadPlatform_panel_user:
+smartCity_panel_user:
     resource:   "@SmartCityPanelBundle/Controller/UserController.php"
     type:       annotation
     prefix:     /user
 
-jahadPlatform_panel_province:
+smartCity_panel_province:
     resource:   "@SmartCityPanelBundle/Controller/ProvinceController.php"
     type:       annotation
     prefix:     /province
 
-jahadPlatform_panel_monitoring:
-    resource:   "@SmartCityPanelBundle/Controller/MonitoringController.php"
+smartCity_panel_sensor:
+    resource:   "@SmartCityPanelBundle/Controller/SensorController.php"
     type:       annotation
-    prefix:     /monitoring
+    prefix:     /sensor

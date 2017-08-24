@@ -114,41 +114,11 @@ class ElasticService
         $searchParams = [
             'index' => ElasticService::$index,
             'type' => ElasticService::$spec,
-            "size" => 0,
+            'size' => 1,
+            'terminate_after' => 1,
             'body' => [
-                'aggs' => [
-                    'clustering' => [ // name of aggregation
-                        'filter' => [
-                            'geo_bounding_box' => [ 
-                                'location' => [ // geo_point field
-                                    'top_left' => [
-                                        'lat' => $mapBounds['top_left_lat'],
-                                        'lon' => $mapBounds['top_left_lon']
-                                    ],
-                                    'bottom_right' => [
-                                        'lat' => $mapBounds['bottom_right_lat'],
-                                        'lon' => $mapBounds['bottom_right_lon']
-                                    ]
-                                ]
-                            ]
-                        ],
-                        'aggs' =>[
-                            'markers' => [ // name of aggregation
-                                'geohash_grid' => [
-                                    'field' => 'location', // filed on which the aggregation need to work
-                                    'precision' => $zoomLevel //zoom can have values from 1 to 8
-                                ],
-                                "aggs" => [
-                                    "device" => [ // name of aggregation
-                                        "terms" => [
-                                            "script" => "doc['device_id'].value + '|' + doc['type'].value",
-                                            "size" => 1,
-                                        ],
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ]
+                "query" => [
+                    "term" => [ "device_id" => $sensorId ]
                 ]
             ]
         ];
