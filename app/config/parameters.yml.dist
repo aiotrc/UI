@@ -28,6 +28,6 @@ parameters:
     locale: fa
 
     ## elastic
-    elastic_url: localhost:9200
+    elastic_host: localhost
     elastic_index: test1
     elastic_log_type: log

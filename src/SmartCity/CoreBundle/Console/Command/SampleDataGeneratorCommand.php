@@ -11,8 +11,8 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('SmartCity:sampledata:generate')
-            ->setDescription('Generate Sample Data for Sensors')
+            ->setName('SmartCity:test-data:generate')
+            ->setDescription('Generate Test Data for Sensors')
         ;
     }
 
@@ -22,22 +22,27 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
             'index' => 'sensor'
         ];
 
+        $device_id = $this->generate_device_id(range(1,10, 1), range(1, 20, 1));
+        $spec_count = sizeof($device_id);
+
+//        var_dump(strtotime('2012-12-29 09:31:21'));
+//        die();
         $types = [
             'log' => [
-                'number_of_sample' => 1000,
+                'number_of_sample' => 10000,
                 'variables' => [
                     'device_id' => [
                         'type' => 1,
-                        'combination' => true,
-                        'data' => [
-                            range(1,10, 1),
-                            range(1, 500, 1)
-                        ]
+                        'combination' => false,
+                        'data' => $device_id
                     ],
                     'time' => [
                         'type' => 1,
                         'combination' => false,
-                        'data' => range(strtotime('2009-12-29 06:31:21'), strtotime('2009-12-29 09:31:21'), 1)
+                        'data' => [
+                            strtotime('2009-12-29 06:31:21'),
+                            strtotime('2012-12-29 09:31:21')
+                            ]
                     ],
                     'state' => [
                         'type' => 2,
@@ -49,15 +54,12 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
                 ]
             ],
             'spec' => [
-                'number_of_sample' => 200000,
+                'number_of_sample' => $spec_count,
                 'variables' => [
                     'device_id' => [
                         'type' => 1,
-                        'combination' => true,
-                        'data' => [
-                            range(1,10, 1),
-                            range(1, 500, 1)
-                        ]
+                        'combination' => false,
+                        'data' => $device_id
                     ],
                     'type' => [
                         'type' => 1,
@@ -88,20 +90,20 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
                 ]
             ],
             'conf' => [
-                'number_of_sample' => 1000,
+                'number_of_sample' => 10000,
                 'variables' => [
                     'device_id' => [
                         'type' => 1,
-                        'combination' => true,
-                        'data' => [
-                            range(1,10, 1),
-                            range(1, 500, 1)
-                        ]
+                        'combination' => false,
+                        'data' => $device_id
                     ],
                     'time' => [
                         'type' => 1,
                         'combination' => false,
-                        'data' => range(strtotime('2009-12-29 06:31:21'), strtotime('2009-12-29 09:31:21'), 1)
+                        'data' => [
+                            strtotime('2009-12-29 06:31:21'),
+                            strtotime('2012-12-29 09:31:21')
+                        ]
                     ],
                     'settings' => [
                         'type' => 2,
@@ -114,9 +116,8 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
         ];
 
         foreach ($types as $type => $data) {
-            $output->writeln("Generating ".$data['number_of_sample']." <fg=yellow>$type</> Data ...");
-            $file = fopen("sampleData/".$type."s.json", 'w+') or die('unable to open');
-            
+            $file = fopen($type.".json", 'w+') or die('unable to open');
+
             for ($i=0; $i < $data['number_of_sample']; $i++) {
                 $index = [
                     'index' => [
@@ -127,16 +128,14 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
                 fwrite($file, json_encode($index)."\n");
                 $result = [];
                 foreach ($data['variables'] as $variable=>$values) {
-                    
                     if ($values['type'] == 1) {
                         if ($values['combination']) {
-                            // $result[$variable] = $values['data'][0][array_rand($values['data'][0])].'_'.$values['data'][1][array_rand($values['data'][1])];
-                            $result[$variable] = $i+400001;
+                            $result[$variable] = $values['data'][0][array_rand($values['data'][0])].'_'.$values['data'][1][array_rand($values['data'][1])];
                         }
                         else {
                             if ($variable=='time') {
-                                $result[$variable] = date('Y-m-d', $values['data'][array_rand($values['data'])]).'T'.
-                                    date('H:i:s', $values['data'][array_rand($values['data'])]).'Z';
+                                $result[$variable] = date('Y-m-d', random_int($values['data'][0], $values['data'][1])).'T'.
+                                    date('H:i:s', random_int($values['data'][0], $values['data'][1])).'Z';
                             }
                             else {
                                 $result[$variable] = $values['data'][array_rand($values['data'])];
@@ -149,13 +148,10 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
                             $result[$variable][$variable_2] = $value[array_rand($value)];
                         }
                     }
-
                 }
                 fwrite($file, json_encode($result)."\n");
             }
-
             fclose($file);
-            $output->writeln("<info>[DONE]</info> \n");
         }
 
         //$int= mt_rand(1262055681, strtotime('2009-12-29 09:31:21'));
@@ -174,8 +170,20 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
 
             return date('Y-m-d H:i:s', $rand_epoch);
         }
-        
 
-        $output->writeln("<info>All Sample Data Successfuly Generated</info>\n");
+
+        $output->writeln('Test Data Successfuly Generated');
+
+    }
+    function generate_device_id($range1, $range2) {
+        $result = [];
+
+        foreach ($range1 as $r1) {
+            foreach ($range2 as $r2) {
+                $result[] = $r1."_".$r2;
+            }
+        }
+
+        return $result;
     }
 }
