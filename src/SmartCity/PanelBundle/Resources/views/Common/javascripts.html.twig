@@ -1,40 +1,33 @@
 {% javascripts
-
+    
     'bundles/smartcitypanel/assets/global/plugins/jquery.min.js'
-    'bundles/smartcitypanel/assets/global/plugins/jquery-migrate.min.js'
-    'bundles/smartcitypanel/assets/global/plugins/jquery-ui/jquery-ui.min.js'
     'bundles/smartcitypanel/assets/global/plugins/bootstrap/js/bootstrap.min.js'
-
-    'bundles/smartcitypanel/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js'
+    'bundles/smartcitypanel/assets/global/plugins/js.cookie.min.js'
     'bundles/smartcitypanel/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js'
     'bundles/smartcitypanel/assets/global/plugins/jquery.blockui.min.js'
-    'bundles/smartcitypanel/assets/global/plugins/jquery.cokie.min.js'
-    'bundles/smartcitypanel/assets/global/plugins/uniform/jquery.uniform.min.js'
     'bundles/smartcitypanel/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'
+
+    'bundles/smartcitypanel/assets/global/plugins/jquery-ui/jquery-ui.min.js'
     'bundles/smartcitypanel/assets/global/plugins/jquery-validation/js/jquery.validate.min.js'
-
+    'bundles/smartcitypanel/assets/global/plugins/jquery-validation/js/localization/messages_fa.js'
     'bundles/smartcitypanel/assets/global/plugins/bootstrap-toastr/toastr.min.js'
-    'bundles/smartcitypanel/assets/global/plugins/bootbox/bootbox.min.js'
-    'bundles/smartcitypanel/assets/global/plugins/select2/dist/js/select2.full.js'
-    'bundles/smartcitypanel/assets/global/plugins/select2/dist/js/i18n/fa.js'
-
+    'bundles/smartcitypanel/assets/global/plugins/select2/js/select2.full.js'
+    'bundles/smartcitypanel/assets/global/plugins/select2/js/i18n/fa.js'
     'bundles/smartcitypanel/assets/global/plugins/pwt.datepicker/lib/shamsi.js'
     'bundles/smartcitypanel/assets/global/plugins/pwt.datepicker/dist/js/persian-date-0.1.8.min.js'
     'bundles/smartcitypanel/assets/global/plugins/pwt.datepicker/dist/js/persian-datepicker-0.4.5.js'
     'bundles/smartcitypanel/assets/global/plugins/icheck/icheck.min.js'
-    
     'bundles/smartcitypanel/assets/global/plugins/datatables/datatables.min.js'
+    'bundles/smartcitypanel/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js'
     'bundles/smartcitypanel/assets/global/plugins/moment.min.js'
     'bundles/smartcitypanel/assets/global/plugins/moment-jalaali.js'
 
-    'bundles/smartcitypanel/assets/global/scripts/metronic.js'
-    'bundles/smartcitypanel/assets/admin/layout/scripts/layout.js'
-    'bundles/smartcitypanel/assets/admin/layout/scripts/demo.js'
+    'bundles/smartcitypanel/assets/global/scripts/app.js'
+    'bundles/smartcitypanel/assets/layouts/layout/scripts/layout.js'
+    'bundles/smartcitypanel/assets/layouts/layout/scripts/demo.js'
 
-    'bundles/tetranzselect2entity/js/select2entity.js'
     'bundles/bazingajstranslation/js/translator.min.js'
     'bundles/fosjsrouting/js/router.js'
-
     'bundles/smartcitypanel/js/TableUtil.js'
     'bundles/smartcitypanel/js/BackendFramework.js'
 
@@ -42,21 +35,8 @@
 %}
     <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
-
-{% if app.request.getLocale() == 'fa' %}
-    {% javascripts
-        'bundles/smartcitypanel/assets/global/plugins/jquery-validation/js/localization/messages_fa.js'
-        
-        filter='?jsqueeze'
-
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endif %}
-
-
-{# <script src="{{ url('bazinga_jstranslation_js') }}" type="text/javascript"></script> #}
-{# <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'labels' }) }}" type="text/javascript"></script> #}
-{# <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'buttons' }) }}" type="text/javascript"></script> #}
-
+{# 
+<script src="{{ url('bazinga_jstranslation_js') }}" type="text/javascript"></script>
+<script src="{{ url('bazinga_jstranslation_js', { 'domain': 'labels' }) }}" type="text/javascript"></script>
+#} 
 <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>

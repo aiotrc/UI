@@ -42,15 +42,15 @@ class RoleDatatable extends AbstractDatatableView
 
         $this->options->set(array(
             'class' => Style::BOOTSTRAP_3_STYLE . ' table-condensed text-center',
-            'display_start' => -1,
-            'dom' => 'lfrtip', // default, but not used because 'use_integration_options' = true
+            'display_start' => 0,
+            'defer_loading' => -1,
             'length_menu' => array(10, 25, 50, 100),
             'order_classes' => true,
-            'order' => array(array(0, 'asc')),
+            'order' => array(array(0, 'desc')),
             'order_multi' => true,
             'page_length' => 50,
             'paging_type' => Style::FULL_NUMBERS_PAGINATION,
-            'renderer' => '', // default, but not used because 'use_integration_options' = true
+            'renderer' => '',
             'scroll_collapse' => false,
             'search_delay' => 4,
             'state_duration' => 7200,
@@ -58,21 +58,21 @@ class RoleDatatable extends AbstractDatatableView
             'individual_filtering' => false,
             'individual_filtering_position' => 'head',
             'use_integration_options' => true,
-            'force_dom' => true
+            'dom' => "<'row'<'col-sm-6'l><'col-sm-6'f>>" .
+                    "<'row'<'col-sm-12'tr>>" .
+                    "<'row'<'col-sm-6'i><'col-sm-6'p>>",
+            'force_dom' => true,
         ));
 
         $this->columnBuilder
             ->add('id', 'column', array(
                 'title' => $this->translator->trans('label.id', array(), 'labels'),
-                'class' => 'text-right'
             ))
             ->add('title', 'column', array(
                 'title' => $this->translator->trans('label.role.title', array(), 'labels'),
-                'class' => 'text-right'
             ))
             ->add('role', 'column', array(
                 'title' => $this->translator->trans('label.role.code', array(), 'labels'),
-                'class' => 'text-right'
             ))
             ->add('visible', 'column', array(
                 'title' => $this->translator->trans('label.visible', array(), 'labels'),
@@ -90,7 +90,7 @@ class RoleDatatable extends AbstractDatatableView
                         'attributes' => array(
                             'rel' => 'tooltip',
                             'title' => $this->translator->trans('button.edit', array(), 'buttons'),
-                            'class' => 'btn btn-xs purple',
+                            'class' => 'btn btn-sm blue',
                             'role' => 'button'
                         ),
                     )

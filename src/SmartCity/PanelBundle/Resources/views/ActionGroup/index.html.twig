@@ -16,12 +16,20 @@
 
         <div class="page-toolbar">
             <div class="btn-group pull-left">
-                <a href="{{ path('panel_action_group_new') }}" class="btn blue"><i class="fa fa-plus-circle"></i> {% trans from "labels" %}label.actiongroup.new{% endtrans %}</a>
+                <a href="{{ path('panel_action_group_new') }}" class="btn btn-fit-height blue">
+                    <i class="fa fa-plus-circle"></i>
+                    {% trans from "labels" %}label.actiongroup.new{% endtrans %}
+                </a>
             </div>
         </div>
     </div>
     
-    {{ datatable_render_html(datatable) }}
+    
+    <div class="portlet light bordered">
+        <div class="portlet-body">
+            {{ datatable_render_html(datatable) }}
+        </div>
+    </div>
 
 {% endblock %}
 

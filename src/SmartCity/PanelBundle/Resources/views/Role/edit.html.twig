@@ -21,8 +21,10 @@
         %}
         {{ toolbox.breadcrumbs(breadcrumbs_items) }}
 
-        <div class="btn-group pull-left">
-            {{ form_widget(edit_form.submit) }}
+        <div class="page-toolbar">
+            <div class="btn-group pull-left">
+                {{ form_widget(edit_form.submit, {'attr': { 'class': 'btn blue btn-fit-height'}}) }}
+            </div>
         </div>
 
     </div>

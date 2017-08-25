@@ -13,8 +13,13 @@ BackendFramework = {
 	modal: $('#myModal'),
 
 	init: function(){
-		$('.page-sidebar .sub-menu li.active').parents('li').addClass('active');
-		this.goToSpecificTabOnPageReload();
+		$('.page-sidebar .sub-menu li.active')
+			.parents('li').addClass('active')
+			.find('.arrow').addClass('open')
+		;
+		var path = window.location.pathname;
+		
+		$('.nav-item > a[href="'+path+'"]').parents('li').addClass('active');
 		// $('.fancybox-button').fancybox();
 
 		$.validator.addMethod("regex", function(value, element, regexpr) {          
@@ -34,30 +39,30 @@ BackendFramework = {
 		    }
 		});
 
-		$.fn.select2entityAjax = function(action) {
-		    var action = action || {};
-		    var template = function (item) {
-		        var img = item.img || null;
-		        if (!img) {
-		            if (item.element && item.element.dataset.img) {
-		                img = item.element.dataset.img;
-		            } else {
-		                return item.text;
-		            }
-		        }
-		        return $(
-		            '<span><img src="' + img + '" class="img-circle img-sm"> ' + item.text + '</span>'
-		        );
-		    };
-		    this.select2entity($.extend(action, {
-		        templateResult: template,
-		        templateSelection: template,
-		        dir: "ltr",
-		        tokenSeparators: [',']
-		    }));
-		    return this;
-		};
-		$('.select2entity').select2entityAjax();
+		// $.fn.select2entityAjax = function(action) {
+		//     var action = action || {};
+		//     var template = function (item) {
+		//         var img = item.img || null;
+		//         if (!img) {
+		//             if (item.element && item.element.dataset.img) {
+		//                 img = item.element.dataset.img;
+		//             } else {
+		//                 return item.text;
+		//             }
+		//         }
+		//         return $(
+		//             '<span><img src="' + img + '" class="img-circle img-sm"> ' + item.text + '</span>'
+		//         );
+		//     };
+		//     this.select2entity($.extend(action, {
+		//         templateResult: template,
+		//         templateSelection: template,
+		//         dir: "ltr",
+		//         tokenSeparators: [',']
+		//     }));
+		//     return this;
+		// };
+		// $('.select2entity').select2entityAjax();
 		
 	},
 
@@ -72,22 +77,6 @@ BackendFramework = {
 
 	persianNumberMapper: function(num) { 
 		return ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'][num]; 
-	},
-
-	goToSpecificTabOnPageReload: function () {
-
-		target = this.getQueryVariable('target');
-		if (target) {
-		    $('a[data-target=#'+target+']').tab('show');
-		}
-		
-		// Change hash for page-reload
-		$('.nav-tabs a').on('shown.bs.tab', function (e) {
-          	if (history.pushState) {
-            	var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?target='+e.target.target;
-            	window.history.pushState({path:newurl},'',newurl);
-          	}
-		})
 	},
 
 	getQueryVariable: function(variable){

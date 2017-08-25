@@ -33,8 +33,8 @@
 {# sidebar menu #}
 {% macro menu(title, controller_name, href='javascript:;', icon='fa fa-list', dropdown=true) %}
     {% set active_controller = app.request.attributes.get('_controller') %}
-    <li {# {% if controller_name in active_controller %}class="active"{% endif %} #}>
-        <a href="{{ href }}" {% if dropdown == true %} class="dropdown-toggle" data-toggle="dropdown" {% endif %}>
+    <li class="nav-item {# {% if controller_name in active_controller %}active{% endif %} #}">
+        <a href="{{ href }}" {% if dropdown == true %} class="nav-link nav-toggle"{% endif %}>
             <i class="{{ icon }}"></i>
             <span class="title">{{ title|trans([], 'labels') }}</span>
             {% if dropdown %}
@@ -50,31 +50,32 @@
     {% if dropdown == true %}
         </ul>
     {% endif %}
-        </li>
+
+    </li>
 {% endmacro %}
 
 {% macro sub_menu(title, href, icon) %}
     {% set current_route = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
-    <li{% if href == current_route %} class="active"{% endif %}>
-        <a href="{{ href }}">
+    <li class="nav-item {% if href == current_route %} active {% endif %}">
+        <a href="{{ href }}" class="nav-link">
             <i class="{{ icon }}"></i>
-            {{ title|trans([], 'labels') }}
+            <span class="title">{{ title|trans([], 'labels') }}</span>
         </a>
     </li>
 {% endmacro %}
 
 {# portlet #}
-{% macro portlet(title, desc, content, colNum = 6, minHeight = '100px', icon, color, portletClass = '', actions) %}
+{% macro portlet(title, desc, content, colNum = 6, minHeight = '250px', icon, color, portletClass = '', actions) %}
     <div class="col-sm-{{colNum}}">
-        <div class="portlet light bg-inverse {{portletClass}}" style="min-height: {{minHeight}}">
+        <div class="portlet light bordered {{portletClass}}" style="min-height: {{minHeight}}">
             <div class="portlet-title">
                 <div class="caption">
                     <i class="{{ icon }} {{ color }}"></i>
-                    <span class="caption-subject {{ color }} bold uppercase">{{ title|trans([], 'labels') }}</span>
+                    <span class="caption-subject font-purple-soft {{ color }} bold uppercase">{{ title|trans([], 'labels') }}</span>
                 </div>
                 <div class="actions">
                     {{actions}}
-                    <a class="btn btn-circle btn-default fullscreen icon-only" href="javascript:;" data-original-title="" title="تمام صفحه"><i class="icon-cursor-move"></i></a>
+                    {# <a class="btn btn-circle btn-default fullscreen icon-only" href="javascript:;" data-original-title="" title="تمام صفحه"><i class="icon-cursor-move"></i></a> #}
                 </div>
             </div>
             <br>

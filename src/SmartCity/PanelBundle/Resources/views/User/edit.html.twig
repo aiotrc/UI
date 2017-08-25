@@ -21,8 +21,10 @@
         
         {{ toolbox.breadcrumbs(breadcrumbs_items) }}
 
-        <div class="btn-group pull-left">
-            {{ form_widget(edit_form.submit) }}
+        <div class="page-toolbar">
+            <div class="btn-group pull-left">
+                {{ form_widget(edit_form.submit, {'attr': { 'class': 'btn blue btn-fit-height'}}) }}
+            </div>
         </div>
     </div>
 
@@ -63,39 +65,42 @@
                 <span class="hidden user_fullname">{{user.firstname ~ ' ' ~ user.lastname}}</span>
             </div>
             <div class="col-sm-8">
-                <a href="{{path('panel_user_role_edit', {'id':user.id})}}" class="role_edit_button btn btn-xs blue"><i class="fa fa-lock"></i> 
+                <a href="{{path('panel_user_role_edit', {'id':user.id})}}" class="role_edit_button btn btn-sm blue">
+                    <i class="fa fa-lock"></i> 
                     {% trans from "labels" %}label.access_managements{% endtrans %}
                 </a>
             </div>
         </div> 
     {% endset %}
-    
-    <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" data-target="#basicData" target="basicData">
-            <i class="fa fa-address-card"></i>
-                {% trans from "labels" %}label.basic_data{% endtrans %}
-            </a>
-        </li>
+    <div class="tabbable-line">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" data-target="#basicData" target="basicData">
+                <i class="icon-user"></i>
+                    {% trans from "labels" %}label.basic_data{% endtrans %}
+                </a>
+            </li>
 
-        <li>
-            <a data-toggle="tab" data-target="#systemData" target="systemData"><i class="fa fa-lock"></i>
-            {% trans from "labels" %}label.system_data{% endtrans %}
-            </a>
-        </li>
-    </ul>
+            <li>
+                <a data-toggle="tab" data-target="#systemData" target="systemData">
+                    <i class="icon-lock"></i>
+                    {% trans from "labels" %}label.system_data{% endtrans %}
+                </a>
+            </li>
+        </ul>
 
-    <div class="tab-content">
-        <div id="basicData" class="tab-pane active">
-            <div class="row">
-                {{ toolbox.portlet('label.personal_data', '', personal_data, 6) }}
-                {{ toolbox.portlet('label.contact_data', '', contact_data, 6, '335px') }}
+        <div class="tab-content">
+            <div id="basicData" class="tab-pane active">
+                <div class="row">
+                    {{ toolbox.portlet('label.personal_data', '', personal_data, 6) }}
+                    {{ toolbox.portlet('label.contact_data', '', contact_data, 6, '335px') }}
+                </div>
             </div>
-        </div>
 
-        <div id="systemData" class="tab-pane">
-            <div class="row">
-                {{ toolbox.portlet('label.account_data','' , account_data, 6, '250px') }}
-                {{ toolbox.portlet('label.change_password','' , password_data, 6, '250px') }}
+            <div id="systemData" class="tab-pane">
+                <div class="row">
+                    {{ toolbox.portlet('label.account_data','' , account_data, 6, '250px') }}
+                    {{ toolbox.portlet('label.change_password','' , password_data, 6, '250px') }}
+                </div>
             </div>
         </div>
     </div>
@@ -108,6 +113,7 @@
     
     {% javascripts
         'bundles/smartcitypanel/js/User.js'
+        'bundles/smartcitypanel/js/UserRole.js'
     %}
         <script src="{{ asset_url }}"></script>
 
@@ -117,4 +123,5 @@
 
 {% block documentReady %}
     User.init('edit');
+    UserRole.init('edit');
 {% endblock %}

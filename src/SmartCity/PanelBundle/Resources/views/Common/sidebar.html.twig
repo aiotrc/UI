@@ -1,56 +1,37 @@
+<!-- BEGIN SIDEBAR -->
 <div class="page-sidebar-wrapper">
+    <!-- BEGIN SIDEBAR -->
+    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
     <div class="page-sidebar navbar-collapse collapse">
-        <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="false" data-slide-speed="200">
-            <li class="sidebar-toggler-wrapper hide">
+        <!-- BEGIN SIDEBAR MENU -->
+        <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+        <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+        <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+        <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+        <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+        <ul class="page-sidebar-menu page-header-fixed page-sidebar-menu-light " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+        {# <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="false" data-slide-speed="200">  #}
+            {{ toolbox.menu('label.dashboard', 'Dashboard', path('panel_dashboard_index') ,'icon-home', false) }}
+            {{ toolbox.end_menu(false) }}
 
-                <div class="sidebar-toggler">
-                </div>
-            </li>
-            {# <li><br></li> #}
-            {# <li class="sidebar-search-wrapper">
-                <form class="sidebar-search " action="extra_search.html" method="POST">
-                    <a href="javascript:;" class="remove">
-                    <i class="icon-close"></i>
-                    </a>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <span class="input-group-btn">
-                        <a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
-                        </span>
-                    </div>
-                </form>
-            </li> #}
-            
-    {{ toolbox.menu('label.dashboard', 'Dashboard', path('panel_dashboard_index') ,'icon-home', false) }}
-    {{ toolbox.end_menu(false) }}
+                {{ toolbox.menu('label.user.management', 'Users', '', 'icon-user') }}
+                    {{ toolbox.sub_menu('label.user.list', path('panel_user_index'),'fa fa-list') }}
+                    {{ toolbox.sub_menu('label.role.list', path('panel_role_index'),'fa fa-lock') }}
+                    {{ toolbox.sub_menu('label.actiongroup.list', path('panel_action_group_index'),'fa fa-flash') }}
+                {{ toolbox.end_menu() }}
 
-    {{ toolbox.menu('label.user.management', 'Users', '#', 'icon-user') }}
-        {{ toolbox.sub_menu('label.user.list', path('panel_user_index'),'fa fa-list') }}
-        {{ toolbox.sub_menu('label.user.new', path('panel_user_new'),'fa fa-plus') }}
-        {{ toolbox.sub_menu('label.role.list', path('panel_role_index'),'fa fa-lock') }}
-        {{ toolbox.sub_menu('label.actiongroup.list', path('panel_action_group_index'),'fa fa-flash') }}
-    {{ toolbox.end_menu() }}
+                {{ toolbox.menu('label.sensor.management', 'Sensor', 'javascript:;', 'icon-bulb') }}
+                    {{ toolbox.sub_menu('label.sensor.map', path('panel_sensor_map'),'icon-map') }}
+                {{ toolbox.end_menu(false) }}
 
-    {{ toolbox.menu('label.sensor.management', 'Sensor', '#', 'icon-bulb') }}
-        {{ toolbox.sub_menu('label.sensor.map', path('panel_sensor_map'),'icon-map') }}
-    {{ toolbox.end_menu(false) }}
+                {# {% if app.user.hasRole('ROLE_SUPER_ADMIN') or app.user.hasRole('ROLE_ADMIN') %}  #}
+                {# {% endif %} #}
 
-    {# {% if app.user.hasRole('ROLE_SUPER_ADMIN') or app.user.hasRole('ROLE_ADMIN') %}  #}
-    {# {% endif %} #}
-
-    
-    {# {% endif %} #}
-    
-    
-
-{# {{ toolbox.menu('label.system.settings', 'System','#', 'icon-settings') }} #}
-    {# {{ toolbox.sub_menu('label.province.list', '#TODO','icon-map') }} #}
-    {# {{ toolbox.sub_menu('label.city.list', '#TODO','icon-pointer') }} #}
-{# {{ toolbox.end_menu() }} #}
-
-
-            
         </ul>
+        <!-- END SIDEBAR MENU -->
     </div>
+    <!-- END SIDEBAR -->
 </div>
-
+<!-- END SIDEBAR -->

@@ -20,8 +20,10 @@
         %}
         {{ toolbox.breadcrumbs(breadcrumbs_items) }}
 
-        <div class="page-toolbar btn-group">
-            {{ form_widget(form.submit) }}
+        <div class="page-toolbar">
+            <div class="btn-group pull-left">
+                {{ form_widget(form.submit, {'attr': { 'class': 'btn blue btn-fit-height'}}) }}
+            </div>
         </div>
     </div>
 
@@ -48,30 +50,35 @@
         {{ form_row(form.locale) }} 
     {% endset %}
 
-    <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" data-target="#basicData" target="basicData">
-            <i class="fa fa-address-card"></i>
-                {% trans from "labels" %}label.basic_data{% endtrans %}
-            </a>
-        </li>
-        <li>
-            <a data-toggle="tab" data-target="#systemData" target="systemData"><i class="fa fa-lock"></i>
-                {% trans from "labels" %}label.system_data{% endtrans %}
-            </a>
-        </li>
-    </ul>
 
-    <div class="tab-content">
-        <div id="basicData" class="tab-pane active">
-            <div class="row">
-                {{ toolbox.portlet('label.personal_data' ,'' , personal_data, 6) }}
-                {{ toolbox.portlet('label.contact_data' ,'' , contact_data, 6, '335px') }}
+    <div class="tabbable-line">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" data-target="#basicData" target="basicData">
+                    <i class="icon-user"></i>
+                    {% trans from "labels" %}label.basic_data{% endtrans %}
+                </a>
+            </li>
+            <li>
+                <a data-toggle="tab" data-target="#systemData" target="systemData">
+                    <i class="icon-lock"></i>
+                    {% trans from "labels" %}label.system_data{% endtrans %}
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="basicData" class="tab-pane active">
+                <div class="row">
+                    {{ toolbox.portlet('label.personal_data' ,'' , personal_data, 6) }}
+                    {{ toolbox.portlet('label.contact_data' ,'' , contact_data, 6, '335px') }}
+                </div>
             </div>
-        </div>
 
-        <div id="systemData" class="tab-pane">
-            <div class="row">
-                {{ toolbox.portlet('label.account_data', '' , system_data, 6) }}
+            <div id="systemData" class="tab-pane">
+                <div class="row">
+                    {{ toolbox.portlet('label.account_data', '' , system_data, 6) }}
+                </div>
             </div>
         </div>
     </div>

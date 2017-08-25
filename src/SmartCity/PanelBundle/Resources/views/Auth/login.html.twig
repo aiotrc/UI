@@ -1,91 +1,83 @@
-{% extends 'SmartCityPanelBundle:Auth:base.html.twig' %}
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="{{ app.request.getLocale() }}" dir="rtl">
+<!--<![endif]-->
+    <head>
+        <meta charset="utf-8"/>
+        <title>سامانه مدیریت سنسورهای هوشمند شهری</title>
+        
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta content="SmartCity team" name="author"/>
+        <meta content="info@SmartCity.ir" name="email"/>
 
-{% block body %}
-    <div class="login">
-        <br>
-        <div class="logo text-center">
-            <h2 class="font-green">سامانه مدیریت سنسورهای هوشمند شهری</h2>
-        </div>
-        <div class="content">
-            <!-- BEGIN LOGIN FORM -->
-            <form class="login-form" action="{{ path("panel_auth_login_check") }}" method="POST">
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        {# {% image 'bundles/smartcitypanel/images/favicon.jpg' %}
+            <link rel="icon" type="image/png" href="{{ asset_url }}" />
+        {% endimage %} #}
 
-                <br>
-                <div class="form-title font-green" style="text-align:center; font-size:25px">{% trans from 'labels' %}label.login{% endtrans %}</div>
+    {% include 'SmartCityPanelBundle:Common:stylesheets.html.twig' %}
 
-                {% if error %}
-                    <div class="Metronic-alerts alert alert-warning note-bordered fade in">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
-                        {{ error.messageKey|trans([], 'labels') }}
-                    </div>
-                {% endif %}
-                <div class="alert alert-danger display-hide">
-                    <button class="close" data-close="alert"></button>
-                    <span>{% trans from 'labels' %}label.user_pass_empty{% endtrans %}</span>
-                </div>
-
-                <div class="form-group">
-                    <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
-                    <label class="control-label visible-ie8 visible-ie9">
-                        {% trans from 'labels' %}label.username{% endtrans %}
-                    </label>
-                    <div class="input-icon">
-                        <i class="fa fa-user"></i>
-                        <input class="form-control placeholder-no-fix" type="text" autocomplete="off"
-                               placeholder="{% trans from 'labels' %}label.username{% endtrans %}"
-                               name="_username"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label visible-ie8 visible-ie9">{% trans from 'labels' %}label.password{% endtrans %}</label>
-                    <div class="input-icon">
-                        <i class="fa fa-lock"></i>
-                        <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="{% trans from 'labels' %}label.password{% endtrans %}" name="_password"/>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <label class="checkbox rememberme">
-                        <input type="checkbox" class="icheck" name="_remember_me" value="1"/> {% trans from 'labels' %}
-                        label.remember_me{% endtrans %} 
-                    </label>
-                    <button type="submit" class="btn green-haze pull-right">
-                        {% trans from 'labels' %}label.login{% endtrans %} <i class="m-icon-swapleft m-icon-white"></i>
-                    </button>
-                </div>
-                <div class="forget-password">
-                    {# <p>
-                        <a href="" id="forget-password">
-                            {% trans from 'labels' %}label.forget_password.title{% endtrans %}
-                        </a>
-                    </p> #}
-
-                    {# <p>
-                        {% if  app.request.locale == "fa" %}
-                            <a href="{{ path('panel_locale_change', {_locale: 'en'}) }}" class="btn btn-xs blue">{% trans from 'labels' %}label.locale.en{% endtrans %}</a>
-                        {% endif %}
-
-                        {% if app.request.locale == "en" %}
-                            <a href="{{ path('panel_locale_change', {_locale: 'fa'}) }}" class="btn btn-xs blue">{% trans from 'labels' %}label.locale.fa{% endtrans %}</a>
-                        {% endif %}
-                    </p> #}
-                </div>
-            </form>
-            <!-- END LOGIN FORM -->
-        </div>
-    </div>
-{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-
-    {% stylesheets 
-                
-        'bundles/smartcitypanel/assets/admin/pages/css/login.css'
-
+    {% stylesheets 'bundles/smartcitypanel/assets/pages/css/login.min.css'
         filter='cssrewrite'
     %}
         <link rel="stylesheet" href="{{ asset_url }}"/>
     {% endstylesheets %}
 
-{% endblock %}
+    </head>
+
+    <body class="login">
+            <!-- BEGIN LOGO -->
+            <div class="logo text-center">
+                <h3 class="font-grey-cararra">سامانه مدیریت سنسورهای هوشمند شهری</h3>
+            </div>
+            <!-- END LOGO -->
+
+            <div class="content">
+                <!-- BEGIN LOGIN FORM -->
+                <form class="login-form" action="{{ path("panel_auth_login_check") }}" method="POST">
+                    <h3 class="form-title font-green">{% trans from 'labels' %}label.login{% endtrans %}</h3>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                    {% if error %}
+                        <div class="alert alert-warning display-hide">
+                            <button class="close" data-close="alert"></button>
+                            <span>{{ error.messageKey|trans([], 'labels') }}</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="alert alert-danger display-hide">
+                        <button class="close" data-close="alert"></button>
+                        <span>{% trans from 'labels' %}label.user_pass_empty{% endtrans %}</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label visible-ie8 visible-ie9">{% trans from 'labels' %}label.username{% endtrans %}</label>
+                        <input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="{% trans from 'labels' %}label.username{% endtrans %}" name="_username" /> </div>
+
+                    <div class="form-group">
+                        <label class="control-label visible-ie8 visible-ie9">{% trans from 'labels' %}label.password{% endtrans %}</label>
+                        <input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="{% trans from 'labels' %}label.password{% endtrans %}" name="_password" /> </div>
+
+                    <div class="form-actions" style="overflow: hidden">
+                        {# <label class="checkbox rememberme">
+                            <input type="checkbox" class="icheck" name="_remember_me" value="1"/> {% trans from 'labels' %}
+                            label.remember_me{% endtrans %} 
+                        </label> #}
+                        <button type="submit" class="btn green-haze pull-right">
+                            {% trans from 'labels' %}label.login{% endtrans %} <i class="m-icon-swapleft m-icon-white"></i>
+                        </button>
+                    </div>
+                </form>
+                <!-- END LOGIN FORM -->
+            </div>
+        </div>
+
+    </body>
+
+    {% include 'SmartCityPanelBundle:Common:javascripts.html.twig' %}
+</html>

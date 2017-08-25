@@ -19,15 +19,20 @@ class ElasticService
 
     public function __construct($host, $port, $index)
     {
+
+//        die();
         $logger = ClientBuilder::defaultLogger('/path/to/logs/', Logger::INFO);
         $serializer = '\Elasticsearch\Serializers\SmartSerializer';
 
         ElasticService::$client = ClientBuilder::create()
             // ->setSerializer($serializer)
             // ->setLogger($logger)
+//            ->setHosts([
+//                'host' => $host,
+//                'port' => $port
+//            ])
             ->setHosts([
-                'host' => $host,
-                'port' => $port
+                'localhost:9200'
             ])
             ->build()
         ;
@@ -126,4 +131,118 @@ class ElasticService
         $response = ElasticService::$client->search($searchParams);
         return $response;
     }
+
+    ## get the latest state object value'
+    ## for log
+    public function latestLog($sensorId) {
+        $searchParams = [
+            'index' => ElasticService::$index,
+            'type' => ElasticService::$log,
+            'size' => 1,
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [
+                                'term' => [
+                                    'device_id' => [
+                                        'value' => $sensorId
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                'sort' => [
+                    [
+                        'time' => [
+                            'order' => 'desc'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $response = ElasticService::$client->search($searchParams);
+        return $response;
+    }
+
+    ## get metric
+    ## for log
+    public function metricValue($sensorId, $fun, $field, $startTime, $endTime) {
+
+        $searchParams = [
+            'index' => ElasticService::$index,
+            'type' => ElasticService::$log,
+            'size' => 1,
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [
+                                'term' => [
+                                    'device_id' => [
+                                        'value' => $sensorId
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                'aggs' => [
+                    'range' => [
+                        'date_range' => [
+                            'field' => 'time',
+                            'ranges' => [
+                                'from' => $startTime,
+                                'to' => $endTime
+                            ]
+                        ],
+                        'aggs' => [
+                            $fun => [
+                                $fun => [
+                                    'field' => "state.$field"
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $response = ElasticService::$client->search($searchParams);
+        return $response;
+    }
+
+    ##
+    ## for log
+    public function aggregationField($interval, $fun, $field, $startTime, $endTime)
+    {
+        $searchParams = [
+            'index' => ElasticService::$index,
+            'type' => ElasticService::$log,
+//            'size' => 1,
+            'body' => [
+                "aggs" => [
+                    "interval" => [
+                        "date_histogram" => [
+                            "field" => "time",
+                            "interval" => $interval
+                        ],
+                        "aggs" => [
+                            $fun => [
+                                $fun => [
+                                    "field" => "state.$field"
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $response = ElasticService::$client->search($searchParams);
+        return $response;
+    }
+
 }

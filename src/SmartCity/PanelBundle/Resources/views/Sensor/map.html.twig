@@ -27,21 +27,17 @@
 
 {% block body -%}
 
+    {% set breadcrumbs_items = [
+        ['label.sensor.map'|trans([], 'labels'), '#' ],
+    ] %}
+
     <div class="page-bar">
-        
-        {% set breadcrumbs_items = 
-            [
-                ['label.sensor.map'|trans([], 'labels'), '#' ],
-            ] 
-        %}
         {{ toolbox.breadcrumbs(breadcrumbs_items) }}
 
-        <div class="page-toolbar">
-            <div class="btn-group pull-left">
-
-            </div>
+        <div class="btn-group pull-left">
         </div>
     </div>
+    
     <div id="sensormap"></div>
 
     {# <div style="width:400px; height:200px;">

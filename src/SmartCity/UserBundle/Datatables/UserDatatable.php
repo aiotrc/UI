@@ -117,18 +117,6 @@ class UserDatatable extends AbstractDatatableView
                     'class' => 'form-control input-sm',
                 ))
             ))
-            ->add('sex', 'column', array(
-                'title' => $this->translator->trans('label.user.sex.label', array(), 'labels'),
-                'width' => '65px',
-                'filter' => array('select', array(
-                    'search_type' => 'eq',
-                    'select_options' =>
-                        ['' => $this->translator->trans('label.any', array(), 'labels')] +
-                        $sexes,
-                    'class' => 'form-control input-sm'
-                ))
-
-            ))
             // ->add('firstname', 'column', array('visible' => false))
             // ->add('lastname', 'column', array('visible' => false))
             ->add('cellphone', 'column', array(
@@ -139,14 +127,14 @@ class UserDatatable extends AbstractDatatableView
                     'class' => 'form-control input-sm',
                 ))
             ))
-            // ->add('email', 'column', array(
-            //     'title' => $this->translator->trans('label.email', array(), 'labels'),
-            //     'width' => '100px',
-            //     'filter' => array('text', array(
-            //         'search_type' => 'like',
-            //         'class' => 'form-control input-sm',
-            //     ))
-            // ))
+            ->add('email', 'column', array(
+                'title' => $this->translator->trans('label.email', array(), 'labels'),
+                'width' => '100px',
+                'filter' => array('text', array(
+                    'search_type' => 'like',
+                    'class' => 'form-control input-sm',
+                ))
+            ))
             ->add('status', 'column', array(
                 'title' => $this->translator->trans('label.user.status.label', array(), 'labels'),
                 'width' => '80px',
@@ -178,11 +166,11 @@ class UserDatatable extends AbstractDatatableView
                 )),
             ))
 
-            // ->add('lastSeen', 'timeago', array(
-            //     'title' => $this->translator->trans('label.user.lastseen', array(), 'labels'),
-            //     'width' => '100px',
-            //     'searchable' => false
-            // ))
+            ->add('lastSeen', 'timeago', array(
+                'title' => $this->translator->trans('label.user.lastseen', array(), 'labels'),
+                'width' => '100px',
+                'searchable' => false
+            ))
             // ->add('provinces.title', 'array', array(
             //     'title' => $this->translator->trans('label.province.title', array(), 'labels'),
             //     'width' => '150px',
@@ -206,7 +194,7 @@ class UserDatatable extends AbstractDatatableView
 
             ->add(null, 'action', array(
                 'title' => $this->translator->trans('label.actions', array(), 'labels'),
-                'width' => '150px',
+                'width' => '80px',
                 'actions' => array(
                     array(
                         'route' => 'panel_user_edit',
@@ -214,24 +202,11 @@ class UserDatatable extends AbstractDatatableView
                             'id' => 'id'
                         ),
                         'icon' => 'fa fa-pencil',
+                        // 'label' => $this->translator->trans('label.edit', array(), 'labels'),
                         'attributes' => array(
                             'rel' => 'tooltip',
                             'title' => $this->translator->trans('button.edit', array(), 'buttons'),
-                            'class' => 'btn btn-xs purple',
-                            'role' => 'button',
-                            'target' => 'blank'
-                        ),
-                    ),
-                    array(
-                        'route' => 'panel_user_show',
-                        'route_parameters' => array(
-                            'id' => 'id'
-                        ),
-                        'icon' => 'fa fa-eye',
-                        'attributes' => array(
-                            'rel' => 'tooltip',
-                            'title' => $this->translator->trans('button.view', array(), 'buttons'),
-                            'class' => 'btn btn-xs green',
+                            'class' => 'btn btn-sm green',
                             'role' => 'button',
                             'target' => 'blank'
                         ),
@@ -245,7 +220,7 @@ class UserDatatable extends AbstractDatatableView
                         'attributes' => array(
                             'rel' => 'tooltip',
                             'title' => $this->translator->trans('button.role.edit', array(), 'buttons'),
-                            'class' => 'role_edit_button btn btn-xs blue',
+                            'class' => 'role_edit_button btn btn-sm blue',
                             'role' => 'button',
                         ),
                     ),
@@ -264,22 +239,22 @@ class UserDatatable extends AbstractDatatableView
             // die();
             $line["fullname"] = $line["firstname"] . " " . $line["lastname"];
             
-            // if($line['lastSeen'] !=''){
-            //     $timeago = $line['lastSeen'];
-            //     $defaultTimestamp = new \DateTime('1997-01-01 00:00:00');
-            //     if ($timeago->getTimestamp() == $defaultTimestamp->getTimestamp()) {
-            //         $line['lastSeen'] = null;
-            //     }    
-            // }
+            if($line['lastSeen'] !=''){
+                $timeago = $line['lastSeen'];
+                $defaultTimestamp = new \DateTime('1997-01-01 00:00:00');
+                if ($timeago->getTimestamp() == $defaultTimestamp->getTimestamp()) {
+                    $line['lastSeen'] = null;
+                }    
+            }
             
 
             if ($line['status'] != '') {
                 $line['status'] = $this->translator->trans(UserConstants::$user_statuses[$line['status']], array(), 'labels');
             }
 
-            if ($line['sex'] != '') {
-                $line['sex'] = $this->translator->trans(UserConstants::$user_sexes[$line['sex']], array(), 'labels');
-            }
+            // if ($line['sex'] != '') {
+                // $line['sex'] = $this->translator->trans(UserConstants::$user_sexes[$line['sex']], array(), 'labels');
+            // }
 
             // if ($line['roles'] != '') {
             //     $line['roles'] = $this->translator->trans(UserConstants::$user_roles[$line['roles'][0]['role']], array(), 'labels');
