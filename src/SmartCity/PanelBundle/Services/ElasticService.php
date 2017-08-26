@@ -218,17 +218,42 @@ class ElasticService
     ## for log
     public function aggregationField($interval, $fun, $field, $startTime, $endTime)
     {
+        $ranges = [];
+        /*
+         * $interval_key = $interval['key'];
+         * $interval_offset = $interval['offset']; // example: 1d
+         */
+        foreach ($interval as $key=>$item) {
+            $ranges[] = array_merge($item, ['key'=>$key]);
+        }
         $searchParams = [
             'index' => ElasticService::$index,
             'type' => ElasticService::$log,
-//            'size' => 1,
+            'size' => 0,
             'body' => [
+                /*
+                 * "aggs" => [
+                 *  "histogram" => [
+                 *          "date_histogram" => [
+                 *              "field" => "time",
+                 *              "interval" => $interval_key,
+                 *               "offset" => $interval_offset,
+                 *              "keyed" => true
+                 *          ],
+                 *          "aggs" => [
+                 *              $fun => [
+                 *                  $fun => [
+                 *                      "field" => "state.$field"
+                 *                  ]
+                 *              ]
+                 *          ]
+                 *      ]
+                 * ]
+                 */
                 "aggs" => [
-                    "interval" => [
-                        "date_histogram" => [
-                            "field" => "time",
-                            "interval" => $interval
-                        ],
+                    "ranges" => [
+                        "ranges" => $ranges,
+                        "keyed" => true,
                         "aggs" => [
                             $fun => [
                                 $fun => [
