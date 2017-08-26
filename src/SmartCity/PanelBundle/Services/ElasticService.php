@@ -226,12 +226,8 @@ class ElasticService
         foreach ($interval as $key=>$item) {
             $ranges[] = array_merge($item, ['key'=>$key]);
         }
-        $searchParams = [
-            'index' => ElasticService::$index,
-            'type' => ElasticService::$log,
-            'size' => 0,
-            'body' => [
-                /*
+//        print "<pre>";print_r($ranges);die();
+        /*
                  * "aggs" => [
                  *  "histogram" => [
                  *          "date_histogram" => [
@@ -250,10 +246,18 @@ class ElasticService
                  *      ]
                  * ]
                  */
+        $searchParams = [
+            'index' => ElasticService::$index,
+            'type' => ElasticService::$log,
+//            'size' => 1,
+            'body' => [
                 "aggs" => [
                     "ranges" => [
-                        "ranges" => $ranges,
-                        "keyed" => true,
+                        "date_range" => [
+                            "field" => "time",
+                            "ranges" => $ranges,
+                            "keyed" => true
+                        ],
                         "aggs" => [
                             $fun => [
                                 $fun => [
@@ -265,7 +269,7 @@ class ElasticService
                 ]
             ]
         ];
-
+//        print "<pre>";print_r($searchParams);die();
         $response = ElasticService::$client->search($searchParams);
         return $response;
     }

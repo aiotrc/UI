@@ -163,12 +163,14 @@ class SensorController extends Controller
      */
     public function aggregationLogAction(Request $request)
     {
-        $interval = $request->get('interval');
+        $request = json_decode($this->get('request')->getContent(), true);
+        $interval = $request['interval'];
 //        think term is humidity or ...
-        $termName = $request->get('termName');
-        $func = $request->get('func');
-        $startTime = $request->get('startTime');
-        $eneTime = $request->get('endTime');
+        $termName = $request['termName'];
+//        var_dump($termName);die();
+        $func = $request['func'];
+        $startTime = $request['startTime'];
+        $eneTime = $request['endTime'];
 
 //        TODO: must be check that field exist in state data
         if ($interval == null || $func == null || $termName == null || $startTime == null || $eneTime == null) {
@@ -178,7 +180,7 @@ class SensorController extends Controller
         }
 
         $elasticService = $this->get('SmartCity.elastic.service');
-        $elasticResponse = $elasticService->aggregationField($interval, $func, $termName, $startTime, $eneTime)['aggregations']['interval']['buckets'];
+        $elasticResponse = $elasticService->aggregationField($interval, $func, $termName, $startTime, $eneTime)['aggregations'];
 
         return new JsonResponse($elasticResponse);
     }
