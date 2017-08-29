@@ -127,22 +127,50 @@ class SensorController extends BaseController
     /**
      * @return JsonResponse
      * @Route("/log/aggregation")
-     * @Method("GET")
+     * @Method("POST")
      * example: http://smartcity.local:8081/sensor/log/aggragation?interval=month&termName=humidity&func=min&startTime=2011-12-14T01:22:27Z&endTime=2012-04-27T00:58:36Z
+     * {
+        "termName": "humidity",
+        "func": "min",
+        "startTime": "2007-04-02T00:00:00.000Z",
+        "endTime": "2019-04-02T00:00:00.000Z",
+        "interval": {
+                "y1": {
+                "to": "2019-04-02T00:00:00.000Z",
+                "from": "2018-04-02T00:00:00.000Z"
+                },
+                "y2": {
+                "from": "2017-04-02T00:00:00.000Z",
+                "to": "2018-04-02T00:00:00.000Z"
+                },
+                "y3": {
+                "from": "2007-04-02T00:00:00.000Z",
+                "to": "2016-04-02T00:00:00.000Z"
+                }
+            }
+        }
      * available func param: min, max, median, sum, avg
      */
     public function aggregationLogAction(Request $request)
     {
-        $interval = $this->required('interval');
-        // think term is humidity or ...
-        $termName = $this->required('termName');
-        $func = $this->required('func');
-        $startTime = $this->required('startTime');
-        $eneTime = $this->required('endTime');
+        $request = json_decode($this->get('request')->getContent(), true);
+        $interval = $request['interval'];
+//        think term is humidity or ...
+        $termName = $request['termName'];
+//        var_dump($termName);die();
+        $func = $request['func'];
+        $startTime = $request['startTime'];
+        $eneTime = $request['endTime'];
 
-        // TODO: must be check that field exist in state data
+//        TODO: must be check that field exist in state data
+        if ($interval == null || $func == null || $termName == null || $startTime == null || $eneTime == null) {
+            return new JsonResponse([
+                'error' => 'not valid url',
+            ]);
+        }
+
         $elasticService = $this->get('SmartCity.elastic.service');
-        $elasticResponse = $elasticService->aggregationField($interval, $func, $termName, $startTime, $eneTime)['aggregations']['interval']['buckets'];
+        $elasticResponse = $elasticService->aggregationField($interval, $func, $termName, $startTime, $eneTime)['aggregations'];
 
         return new JsonResponse($elasticResponse);
     }

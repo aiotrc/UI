@@ -218,16 +218,45 @@ class ElasticService
     ## for log
     public function aggregationField($interval, $fun, $field, $startTime, $endTime)
     {
+        $ranges = [];
+        /*
+         * $interval_key = $interval['key'];
+         * $interval_offset = $interval['offset']; // example: 1d
+         */
+        foreach ($interval as $key=>$item) {
+            $ranges[] = array_merge($item, ['key'=>$key]);
+        }
+//        print "<pre>";print_r($ranges);die();
+        /*
+                 * "aggs" => [
+                 *  "histogram" => [
+                 *          "date_histogram" => [
+                 *              "field" => "time",
+                 *              "interval" => $interval_key,
+                 *               "offset" => $interval_offset,
+                 *              "keyed" => true
+                 *          ],
+                 *          "aggs" => [
+                 *              $fun => [
+                 *                  $fun => [
+                 *                      "field" => "state.$field"
+                 *                  ]
+                 *              ]
+                 *          ]
+                 *      ]
+                 * ]
+                 */
         $searchParams = [
             'index' => ElasticService::$index,
             'type' => ElasticService::$log,
             // 'size' => 1,
             'body' => [
                 "aggs" => [
-                    "interval" => [
-                        "date_histogram" => [
+                    "ranges" => [
+                        "date_range" => [
                             "field" => "time",
-                            "interval" => $interval
+                            "ranges" => $ranges,
+                            "keyed" => true
                         ],
                         "aggs" => [
                             $fun => [
@@ -240,7 +269,7 @@ class ElasticService
                 ]
             ]
         ];
-
+//        print "<pre>";print_r($searchParams);die();
         $response = ElasticService::$client->search($searchParams);
         return $response;
     }
