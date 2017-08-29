@@ -221,7 +221,7 @@ class ElasticService
         $searchParams = [
             'index' => ElasticService::$index,
             'type' => ElasticService::$log,
-//            'size' => 1,
+            // 'size' => 1,
             'body' => [
                 "aggs" => [
                     "interval" => [

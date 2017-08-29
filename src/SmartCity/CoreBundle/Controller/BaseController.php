@@ -21,23 +21,30 @@ use Symfony\Component\Validator\ConstraintViolation;
  */
 class BaseController extends Controller
 {
+
 	/**
-	 * Check required variable in request
-	 *
-	 * @param $variableName
-	 * @return mixed
-	 * @throws \Exception
-	 */
-	protected function required($variableName)
-	{
-		$request = $this->get('request');
-		$value = $request->get($variableName);
-		if (!isset($value) || $value == "") {
-			$response = $this->get('translator')->trans('label.is_required', array(), 'labels').' '.$variableName;
-			throw new \Exception($response);
-		}
-		return $value;
-	}
+     * Check required variable in request
+     *
+     * @param $variableName
+     * @return mixed
+     */
+	 protected function required($variableName)
+	 {
+		 $request = $this->container->get('request');
+		 $value = $request->get($variableName);
+		 if (! isset($value)) {
+			if ($request->isXmlHttpRequest()){
+				$response = $this->get('translator')->trans('label.is_required', array(), 'labels').' '.$variableName;
+				throw new \Exception($response);
+			}
+			else {
+				$this->error("$variableName is required", Logger::ERROR);
+			}
+		 } else {
+			 return $value;
+		 }
+		 return null;
+	 }
 
 	/**
 	 * Check optional variable in request
@@ -241,151 +248,5 @@ class BaseController extends Controller
 		$headers .= "Reply-To: $from";
 
 		mail($to, $subject, $message, $headers);
-	}
-
-
-	// protected function login($username, $password)
-	// {
-	// 	$request = $this->container->get('request');
-	// 	$em = $this->getDoctrine()->getManager();
-	// 	$userModel = $em->getRepository('SmartCityUserBundle:User');
-
-	// 	try {
-	// 		$user = $userModel->loadUserByUsername($username);
-	// 	} catch(UsernameNotFoundException $e) {
-	// 		$this->error('errors.user.wrong_username_or_password', Logger::ERROR, array('username' => $username));
-	// 		return null;
-	// 	}
-
-	// 	// Get the encoder for the users password
-	// 	$encoder_service = $this->get('security.encoder_factory');
-	// 	$encoder = $encoder_service->getEncoder($user);
-
-	// 	// logging a new user in, manually
-	// 	$providerKey = 'main';
-	// 	$firewallName = 'api_v1';
-	// 	if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
-	// 		$unauthenticatedToken = new UsernamePasswordToken($user, $user->getPassword(), $providerKey, $user->getRoles());
-	// 		$authenticatedToken = $unauthenticatedToken;
-	// 		$this->get("security.token_storage")->setToken($authenticatedToken); // now the user is logged in
-
-	// 		// Fire the login event
-	// 		// Logging the user in above the way we do it doesn't do this automatically
-	// 		$event = new InteractiveLoginEvent($request, $authenticatedToken);
-	// 		$this->get("event_dispatcher")->dispatch("security.authentication", $event); // interactive_login changed to authentication
-	// 		$this->get('event_dispatcher')->dispatch(SecurityEvents::INTERACTIVE_LOGIN, $event);
-	// 		$this->get('event_dispatcher')->dispatch(AuthenticationEvents::AUTHENTICATION_SUCCESS, new AuthenticationEvent($authenticatedToken) );
-
-	// 		$this->get('session')->set('_security_' . $firewallName, serialize($authenticatedToken));
-	// 	} else {
-	// 		$this->error('errors.user.wrong_username_or_password', Logger::ERROR, array('username' => $username));
-	// 		return null;
-	// 	}
-	// 	return $user;
-	// }
-
-	protected function login($username, $password, $manualLogin = false)
-    {
-
-        // $em = $this->getDoctrine()->getManager();
-        // $userModel = $em->getRepository('SmartCityUserBundle:User');
-        // $user = $userModel->loadUserByUsername($username);
-        
-        // if (!$user) {
-        //     throw new UsernameNotFoundException("User not found");
-        // } 
-        // else {
-        //     $token = new UsernamePasswordToken($user, null, "your_firewall_name", $user->getRoles());
-        //     $this->get("security.context")->setToken($token); //now the user is logged in
-             
-        //     //now dispatch the login event
-        //     $request = $this->get("request");
-        //     $event = new InteractiveLoginEvent($request, $token);
-        //     $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
-        // }
-
-        $request = $this->container->get('request');
-        $em = $this->getDoctrine()->getManager();
-        $userModel = $em->getRepository('SmartCityUserBundle:User');
-
-        try {
-            $user = $userModel->loadUserByUsername($username);
-        } 
-        catch(UsernameNotFoundException $e) {
-            throw new LogicException(ErrorCode::WRONG_USERNAME_OR_PASSWORD, array(
-                'username' => $username, 
-                'password' => $password
-            ));
-        }
-
-        
-        $encoder_service = $this->get('security.encoder_factory');
-        $encoder = $encoder_service->getEncoder($user);
-
-        $providerKey = 'main';
-        $firewallName = 'panel_register';
-        if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt()) || $manualLogin) {
-
-            $token = new UsernamePasswordToken($user, $user->getPassword(), $providerKey, $user->getRoles());
-            $this->get("security.token_storage")->setToken($token);
-
-            $event = new InteractiveLoginEvent($request, $token);
-            $this->get("event_dispatcher")->dispatch("security.authentication", $event);
-            $this->get('event_dispatcher')->dispatch(SecurityEvents::INTERACTIVE_LOGIN, $event);
-            $this->get('event_dispatcher')->dispatch(AuthenticationEvents::AUTHENTICATION_SUCCESS, new AuthenticationEvent($token) );
-
-            $session = $request->getSession();
-            $session->set('_security_' . $firewallName, serialize($token));
-            $session->save();
-
-        } 
-        else {
-            throw new LogicException(ErrorCode::WRONG_USERNAME_OR_PASSWORD, array(
-                'username' => $username, 
-                'password' => $password
-            ));
-        }
-
-        return $user;
-    }
-
-	/**
-	 * @param Product $product
-	 * @return string
-	 */
-	public function getEncodedHash(Product $product) {
-		$title = $product->getTitle();
-		$id = $product->getId();
-
-		$plain_hash = $title . $id . $title;
-		$sha_first = sha1($plain_hash);
-		$md5 = md5($sha_first);
-		$final = sha1($md5);
-		return $final;
-	}
-
-	public function isValidIdCode($idCode) {
-		$idCode = (int) $idCode;
-		$control_digit = $idCode % 10;
-		$number = $idCode / 10;
-
-		$sum = 0;
-		$i = 2;
-
-		while ($number > 0) {
-			$current_digit = $number % 10;
-			$sum += $current_digit * $i;
-			$i += 1;
-			$number /= 10;
-		}
-		$reminder = $sum % 11;
-		if ($reminder < 2) {
-			if ($reminder == $control_digit)
-				return true;
-			else return false;
-		}
-		if (11 - $reminder == $control_digit)
-			return true;
-		return false;
 	}
 }

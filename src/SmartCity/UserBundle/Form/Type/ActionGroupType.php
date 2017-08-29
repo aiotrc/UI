@@ -67,6 +67,6 @@ class ActionGroupType extends AbstractType
      */
     public function getName()
     {
-        return 'jahadPlatform_userbundle_actiongroup';
+        return 'smartCity_userbundle_actiongroup';
     }
 }

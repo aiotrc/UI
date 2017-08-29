@@ -6,6 +6,10 @@ BackendFramework = {
 		radioClass: 'iradio_square-blue',
 	},
 
+	englishNumbers : ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+    persianNumbers : ["۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰"],
+
+
 	messages:{
 	    updated_successfully: Translator.trans('label.updated.successfully', {}, 'labels'),
 	    are_you_sure: 'آیا مطمئنید ؟'
@@ -187,6 +191,82 @@ BackendFramework = {
 			return this.toFaNum(moment(date, 'YYYY-M-D HH:mm:ss').format('jD jMMMM jYY HH:mm'));
 		}
 		return '';
-	}
+	},
+
+	toFaElement: function(element, hasComma){
+		
+		if(hasComma === undefined){
+			hasComma = true;
+		}
+		$(element).each(function(index, el) {
+			elem = $(this);
+			str = (elem.is('input') || elem.is('select')) ? elem.val() : elem.text();
+			if(hasComma){
+				afterComma = FF.applyCommas(str);
+			}
+			else{
+				afterComma = str;
+			}
+			afterFa = FF.toFaNumber(afterComma);
+			(elem.is('input') || elem.is('select')) ? elem.val(afterEn) : elem.text(afterFa);
+		});
+	},
+
+	toEnElement: function(element, hasComma){
+
+		if(hasComma === undefined){
+			hasComma = true;
+		}
+		$(element).each(function(index, el) {
+			elem = $(this);
+			str = (elem.is('input') || elem.is('select')) ? elem.val() : elem.text();
+			if(hasComma){
+				afterComma = FF.applyCommas(str);
+			}
+			else{
+				afterComma = str;
+			}
+			afterEn = FF.toEnNumber(afterComma);
+			(elem.is('input') || elem.is('select')) ? elem.val(afterEn) : elem.text(afterEn);
+		});
+	},
+
+	toEnNumber: function(value) {
+        if (!value) {
+            return;
+        }
+
+        for (var i = 0 ; i < 10 ; i++) {
+            value = value.replace(new RegExp(this.persianNumbers[i], "g"), this.englishNumbers[i]);
+        }
+        return value;
+    },
+
+    toFaNumber: function(value, comma) {
+
+    	if(typeof value == "string"){
+    		if (!value) {
+    		    return;
+    		}
+    	}
+    	
+    	if(comma === undefined){
+    		comma = false;
+    	}
+
+        value = value.toString();
+        
+        if(comma){
+        	value = this.applyCommas(value);
+        }
+
+        for (var i = 0 ; i < 10 ; i++) {
+            value = value.replace(new RegExp(this.englishNumbers[i], "g"), this.persianNumbers[i]);
+        }
+
+        return value;
+    }
+
+		
 
 }

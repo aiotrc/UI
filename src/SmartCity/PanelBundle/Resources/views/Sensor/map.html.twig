@@ -39,12 +39,21 @@
     </div>
     
     <div id="sensormap"></div>
+    <div class="row">
+        {% set spec_data %}
+            <div id="spec-data">
+                <div>اطلاعات پس از انتخاب سنسور نمایش داده می شود.</div>
+            </div>
+        {% endset %}
 
-    {# <div style="width:400px; height:200px;">
-        <iframe src="http://localhost:5601/app/kibana#/dashboard/fc045f60-8783-11e7-93f6-e39dcb32a18e?embed=true&_g=()&_a=(description:'',filters:!(),options:(darkTheme:!f),panels:!((col:1,id:e0fc0dd0-8783-11e7-93f6-e39dcb32a18e,panelIndex:1,row:1,size_x:6,size_y:3,type:visualization)),query:(query_string:(analyze_wildcard:!t,query:'*')),timeRestore:!f,title:'New+Dashboard',uiState:(P-1:(vis:(defaultColors:('0+-+100':'rgb(0,104,55)')))),viewMode:view)" height="600" width="800"></iframe>
-    </div> #}
-
-
+        {% set last_log_data %}
+            <div id="latest-log">
+                <div>اطلاعات پس از انتخاب سنسور نمایش داده می شود.</div>
+            </div>
+        {% endset %}
+        {{ toolbox.portlet('label.sensor.spec', '', spec_data, 6, '250px') }}
+        {{ toolbox.portlet('label.sensor.last_state', '', last_log_data, 6, '250px') }}
+    </div>
 
 {% endblock %}
 
