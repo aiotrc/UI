@@ -11,7 +11,7 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('SmartCity:test-data:generate')
+            ->setName('SmartCity:sampledata:generate')
             ->setDescription('Generate Test Data for Sensors')
         ;
     }
@@ -29,7 +29,7 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
 //        die();
         $types = [
             'log' => [
-                'number_of_sample' => 10000,
+                'number_of_sample' => 100000,
                 'variables' => [
                     'device_id' => [
                         'type' => 1,
@@ -40,8 +40,8 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
                         'type' => 1,
                         'combination' => false,
                         'data' => [
-                            strtotime('2009-12-29 06:31:21'),
-                            strtotime('2012-12-29 09:31:21')
+                            strtotime('2015-12-29 06:31:21'),
+                            strtotime('2017-12-29 09:31:21')
                             ]
                     ],
                     'state' => [
@@ -54,7 +54,7 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
                 ]
             ],
             'spec' => [
-                'number_of_sample' => $spec_count,
+                'number_of_sample' => 0,
                 'variables' => [
                     'device_id' => [
                         'type' => 1,
@@ -90,7 +90,7 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
                 ]
             ],
             'conf' => [
-                'number_of_sample' => 10000,
+                'number_of_sample' => 0,
                 'variables' => [
                     'device_id' => [
                         'type' => 1,
@@ -116,7 +116,9 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
         ];
 
         foreach ($types as $type => $data) {
-            $file = fopen($type.".json", 'w+') or die('unable to open');
+            $output->writeln("Generating ".$data['number_of_sample']." <fg=yellow>$type</> Data ...");
+            
+            $file = fopen("sampleData/".$type."s.json", 'w+') or die('unable to open');
 
             for ($i=0; $i < $data['number_of_sample']; $i++) {
                 $index = [
@@ -152,6 +154,7 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
                 fwrite($file, json_encode($result)."\n");
             }
             fclose($file);
+            $output->writeln("<info>[DONE]</info> \n");
         }
 
         //$int= mt_rand(1262055681, strtotime('2009-12-29 09:31:21'));
@@ -172,7 +175,7 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
         }
 
 
-        $output->writeln('Test Data Successfuly Generated');
+        $output->writeln("<info>All Sample Data Successfuly Generated</info>\n");
 
     }
     function generate_device_id($range1, $range2) {
@@ -180,7 +183,7 @@ class SampleDataGeneratorCommand extends ContainerAwareCommand
 
         foreach ($range1 as $r1) {
             foreach ($range2 as $r2) {
-                $result[] = $r1."_".$r2;
+                $result[] = '323392';
             }
         }
 

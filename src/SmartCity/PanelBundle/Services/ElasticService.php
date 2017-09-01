@@ -20,17 +20,16 @@ class ElasticService
     public function __construct($host, $port, $index)
     {
 
-//        die();
         $logger = ClientBuilder::defaultLogger('/path/to/logs/', Logger::INFO);
         $serializer = '\Elasticsearch\Serializers\SmartSerializer';
 
         ElasticService::$client = ClientBuilder::create()
             // ->setSerializer($serializer)
             // ->setLogger($logger)
-//            ->setHosts([
-//                'host' => $host,
-//                'port' => $port
-//            ])
+            // ->setHosts([
+            //    'host' => $host,
+            //    'port' => $port
+            // ])
             ->setHosts([
                 'localhost:9200'
             ])
@@ -38,30 +37,6 @@ class ElasticService
         ;
 
         ElasticService::$index = $index;
-    }
-
-    ## log query
-    public function rangeItemQuery($data)
-    {
-        $searchParams = [
-
-            'index' => ElasticService::$index,
-            'type' => ElasticService::$log,
-            'body' => [
-                'query' => [
-                    'bool' => [
-                        'should' => [
-                            [
-                                'range' => $data
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        ];
-
-        $response = ElasticService::$client->search($searchParams);
-        return $response;
     }
 
     ## map marker clustering query
@@ -134,7 +109,7 @@ class ElasticService
 
     ## get the latest state object value'
     ## for log
-    public function latestLog($sensorId) {
+    public function sensorLatestLogQuery($sensorId) {
         $searchParams = [
             'index' => ElasticService::$index,
             'type' => ElasticService::$log,
@@ -169,7 +144,7 @@ class ElasticService
 
     ## get metric
     ## for log
-    public function metricValue($sensorId, $fun, $field, $startTime, $endTime) {
+    public function sensorMetricValueQuery($sensorId, $fun, $field, $startTime, $endTime) {
 
         $searchParams = [
             'index' => ElasticService::$index,
@@ -216,50 +191,53 @@ class ElasticService
 
     ##
     ## for log
-    public function aggregationField($interval, $fun, $field, $startTime, $endTime)
+    public function sensorAggregationLogQuery($sensorId, $fun, $field, $startTime, $endTime, $ranges)
     {
-        $ranges = [];
-        /*
-         * $interval_key = $interval['key'];
-         * $interval_offset = $interval['offset']; // example: 1d
-         */
-        foreach ($interval as $key=>$item) {
-            $ranges[] = array_merge($item, ['key'=>$key]);
-        }
-//        print "<pre>";print_r($ranges);die();
-        /*
-                 * "aggs" => [
-                 *  "histogram" => [
-                 *          "date_histogram" => [
-                 *              "field" => "time",
-                 *              "interval" => $interval_key,
-                 *               "offset" => $interval_offset,
-                 *              "keyed" => true
-                 *          ],
-                 *          "aggs" => [
-                 *              $fun => [
-                 *                  $fun => [
-                 *                      "field" => "state.$field"
-                 *                  ]
-                 *              ]
-                 *          ]
-                 *      ]
-                 * ]
-                 */
+
+        /* "aggs" => [
+         "histogram" => [
+                 "date_histogram" => [
+                     "field" => "time",
+                     "interval" => $interval_key,
+                      "offset" => $interval_offset,
+                     "keyed" => true
+                 ],
+                 "aggs" => [
+                     $fun => [
+                         $fun => [
+                             "field" => "state.$field"
+                         ]
+                     ]
+                 ]
+             ]
+        ] */
         $searchParams = [
             'index' => ElasticService::$index,
             'type' => ElasticService::$log,
             // 'size' => 1,
             'body' => [
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [
+                                'term' => [
+                                    'device_id' => [
+                                        'value' => $sensorId
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
                 "aggs" => [
                     "ranges" => [
                         "date_range" => [
                             "field" => "time",
                             "ranges" => $ranges,
-                            "keyed" => true
+                            // "keyed" => true
                         ],
                         "aggs" => [
-                            $fun => [
+                            'value' => [
                                 $fun => [
                                     "field" => "state.$field"
                                 ]

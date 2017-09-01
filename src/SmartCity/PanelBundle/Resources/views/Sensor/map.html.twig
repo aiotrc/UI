@@ -41,18 +41,112 @@
     <div id="sensormap"></div>
     <div class="row">
         {% set spec_data %}
-            <div id="spec-data">
-                <div>اطلاعات پس از انتخاب سنسور نمایش داده می شود.</div>
+            <div id="sensor-spec">
+                <div class="row">
+                    <div class="col-md-12">اطلاعات پس از انتخاب سنسور نمایش داده می شود.</div>
+                </div>
             </div>
         {% endset %}
 
         {% set last_log_data %}
-            <div id="latest-log">
+            <div id="sensor-latest-log">
                 <div>اطلاعات پس از انتخاب سنسور نمایش داده می شود.</div>
             </div>
         {% endset %}
+        
+        {% set metric_value_data %}
+            <div id="sensor-metric-value">
+                <div id="sensor-metric-value-filters" class="filters">
+                    <input type="hidden" name="sensorId">
+                    
+                    <div class="input-group">
+                        <select name="func" class="form-control input-sm">
+                            <option value="">عملگر</option>
+                            <option value="min">کمترین</option>
+                            <option value="max">بیشترین</option>
+                            {# <option value="sum">مجموع</option> #}
+                            <option value="avg">میانگین</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <select name="termName" class="form-control input-sm">
+                            <option value="">مشخصه</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <input id="metric-value-start-time" name="startTime" type="text" class="pdate form-control input-sm">
+                        <input id="metric-value-start-time_alt" type="hidden">
+                    </div>
+
+                    <div class="input-group">
+                        <input id="metric-value-end-time" name="endTime" type="text" class="pdate form-control input-sm">
+                        <input id="metric-value-end-time_alt" type="hidden">
+                    </div>
+
+                    <div class="input-group">
+                        <button id="sensor-metric-value-btn" class="btn btn-sm blue-hoki">نمایش</button>
+                    </div>
+                </div>
+                
+                <div class="result">اطلاعات پس از انتخاب سنسور و عملیات مورد نیاز نمایش داده می شود.</div>
+            </div>
+        {% endset %}
+
+        {% set aggregation_log_data %}
+            <div id="sensor-aggregation-log-filters" class="filters">
+                <input type="hidden" name="sensorId">
+                
+                <div class="input-group">
+                    <select name="func" class="form-control input-sm">
+                        <option value="">عملگر</option>
+                        <option value="min" selected>کمترین</option>
+                        <option value="max">بیشترین</option>
+                        {# <option value="sum">مجموع</option> #}
+                        <option value="avg">میانگین</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <select name="termName" class="form-control input-sm">
+                        <option value="">مشخصه</option>
+                        <option value="humidity" selected>رطوبت</option>
+                        <option value="temperature">دما</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <select name="timeRange" class="form-control input-sm">
+                        <option value="">بازه زمانی</option>
+                        <option value="DAY_SOFAR">از ابتدای روز</option>
+                        <option value="WEEK_SOFAR">از ابتدای هفته</option>
+                        <option value="MONTH_SOFAR">از ابتدای ماه</option>
+                        <option value="YEAR_SOFAR">از ابتدای سال</option>
+                    </select>
+                </div>
+
+                {# <div class="input-group">
+                    <input id="aggregation-log-start-time" name="startTime" type="text" class="pdate form-control input-sm">
+                    <input id="aggregation-log-start-time_alt" type="hidden">
+                </div>
+
+                <div class="input-group">
+                    <input id="aggregation-log-end-time" name="endTime" type="text" class="pdate form-control input-sm">
+                    <input id="aggregation-log-end-time_alt" type="hidden">
+                </div> #}
+
+                <div class="input-group">
+                    <button id="sensor-aggregation-log-btn" class="btn btn-sm blue-hoki">نمایش</button>
+                </div>
+            </div>
+            <canvas id="aggregation_log" width="400" height="300"></canvas>
+        {% endset %}
+
         {{ toolbox.portlet('label.sensor.spec', '', spec_data, 6, '250px') }}
         {{ toolbox.portlet('label.sensor.last_state', '', last_log_data, 6, '250px') }}
+        {{ toolbox.portlet('label.sensor.metric_value', '', metric_value_data, 6, '250px') }}
+        {{ toolbox.portlet('label.sensor.statistics_on_chart', '', aggregation_log_data, 6, '250px') }}
     </div>
 
 {% endblock %}
@@ -67,8 +161,9 @@
     {% javascripts
         
         'bundles/smartcitypanel/assets/global/plugins/Leaflet.markercluster-1.0.6/dist/leaflet.markercluster.js'
+        'bundles/smartcitypanel/assets/global/plugins/Chart.min.js'
         'bundles/smartcitypanel/assets/global/plugins/Leaflet.markercluster-1.0.6/dist/geohash.js'
-        'bundles/smartcitypanel/js/SensorMap.js'
+        'bundles/smartcitypanel/js/Sensor.js'
 
         filter='?jsqueeze'
     %}
@@ -79,5 +174,5 @@
 {% endblock %}
 
 {% block documentReady %}
-    SensorMap.init()
+    Sensor.init()
 {% endblock %}

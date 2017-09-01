@@ -46,14 +46,14 @@ class SensorController extends BaseController
         $elasticService = $this->get('SmartCity.elastic.service');
         $elasticResult = $elasticService->mapMarkerClusterQuery($bound, $zoomLevel);
 
-        return new JsonResponse($elasticResult['aggregations']['clustering']);
+        return $this->success($elasticResult['aggregations']['clustering']['markers']['buckets']);
     }
 
     /**
      * @return JsonResponse
      * @Route("/spec" , name="panel_sensor_spec", options={"expose"=true})
      * @FrontendAccessible(adminAccessible=true)
-     * @Method("POST")
+     * @Method("GET")
      */
     public function specAction(Request $request)
     {
@@ -64,12 +64,10 @@ class SensorController extends BaseController
         $elasticResult = $elasticService->sensorSpecQuery($senosrId);
 
         if ($elasticResult['hits']['total'] > 0) {
-            return new JsonResponse([
-                'sensor_spec' => $elasticResult['hits']['hits'][0]['_source']
-            ]);
+            return $this->success($elasticResult['hits']['hits'][0]['_source']);
         }
 
-        return new JsonResponse(['error'=> 'not found']);
+        return $this->errorJson('not found');
     }
 
     /**
@@ -83,25 +81,23 @@ class SensorController extends BaseController
         $sensorId = $this->required('sensorId');
 
         $elasticService = $this->get('SmartCity.elastic.service');
-        $elasticResult = $elasticService->latestLog($sensorId);
+        $elasticResult = $elasticService->sensorLatestLogQuery($sensorId);
 
         if ($elasticResult['hits']['total'] > 0) {
-            return new JsonResponse([
-                'sensor_latest_log' => $elasticResult['hits']['hits'][0]['_source']
-            ]);
+            return $this->success($elasticResult['hits']['hits'][0]['_source']);
         }
+        return $this->errorJson('not found');
 
-        return new JsonResponse(['error'=> 'not found']);
     }
 
     /**
      * @return JsonResponse
-     * @Route("/log/field")
+     * @Route("/log/metric-value" , name="panel_sensor_metric_value", options={"expose"=true})
      * @Method("GET")
      * example: http://smartcity.local:8081/sensor/log/field?sensorId=1_1&termName=humidity&func=min&startTime=2011-12-14T01:22:27Z&endTime=2012-04-27T00:58:36Z
      * available func param: min, max, median, sum, avg
      */
-    public function funcFieldLogAction(Request $request)
+    public function metricValueAction(Request $request)
     {
         $sensorId = $this->required('sensorId');
         // think term is humidity or ...
@@ -111,22 +107,18 @@ class SensorController extends BaseController
         $eneTime = $this->required('endTime');
 
         $elasticService = $this->get('SmartCity.elastic.service');
-        $elasticResult = $elasticService->metricValue($sensorId, $func, $termName, $startTime, $eneTime)['aggregations']['range']['buckets'][0];
+        $elasticResult = $elasticService->sensorMetricValueQuery($sensorId, $func, $termName, $startTime, $eneTime)['aggregations']['range']['buckets'][0];
 
         if ($elasticResult['doc_count'] > 0) {
-
-            return new JsonResponse([
-                'value' => $elasticResult[$func]['value']
-            ]);
+            return $this->success($elasticResult[$func]);
         }
 
-        return new JsonResponse(['error'=> 'not found']);
+        return $this->errorJson('not found');
     }
-
 
     /**
      * @return JsonResponse
-     * @Route("/log/aggregation")
+     * @Route("/log/aggregation" , name="panel_sensor_aggregation_log", options={"expose"=true})
      * @Method("POST")
      * example: http://smartcity.local:8081/sensor/log/aggragation?interval=month&termName=humidity&func=min&startTime=2011-12-14T01:22:27Z&endTime=2012-04-27T00:58:36Z
      * {
@@ -153,26 +145,19 @@ class SensorController extends BaseController
      */
     public function aggregationLogAction(Request $request)
     {
-        $request = json_decode($this->get('request')->getContent(), true);
-        $interval = $request['interval'];
-//        think term is humidity or ...
-        $termName = $request['termName'];
-//        var_dump($termName);die();
-        $func = $request['func'];
-        $startTime = $request['startTime'];
-        $eneTime = $request['endTime'];
 
-//        TODO: must be check that field exist in state data
-        if ($interval == null || $func == null || $termName == null || $startTime == null || $eneTime == null) {
-            return new JsonResponse([
-                'error' => 'not valid url',
-            ]);
-        }
+        $sensorId = $this->required('sensorId');
+        $termName = $this->required('termName');
+        $func = $this->required('func');
+        $startTime = $this->required('startTime');
+        $eneTime = $this->required('endTime');
+        $ranges = $this->required('ranges');
 
         $elasticService = $this->get('SmartCity.elastic.service');
-        $elasticResponse = $elasticService->aggregationField($interval, $func, $termName, $startTime, $eneTime)['aggregations'];
+        $elasticResult = $elasticService->sensorAggregationLogQuery($sensorId, $func, $termName, $startTime, $eneTime, $ranges)['aggregations'];
 
-        return new JsonResponse($elasticResponse);
+        return $this->success($elasticResult['ranges']['buckets']);
+
     }
 
 }

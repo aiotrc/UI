@@ -27,6 +27,8 @@ class AuthController extends BaseController
      */
     public function loginAction(Request $request)
     {
+        // dump(123);
+        // die();
         $authenticationUtils = $this->get('security.authentication_utils');
 
         // get the login error if there is one
